@@ -1,0 +1,59 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <mat-card>
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">Company Information</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Register Company</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </mat-card>
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="container-fluid">
+            <mat-card>
+                <form #f="ngForm">
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Name</mat-label>
+                                <input class="" placeholder="Ex. Do " matInput name="name" type="text"
+                                    [(ngModel)]="name">
+                                <button mat-button *ngIf="name" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="name=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>License No</mat-label>
+                                <input on-keyup="action()" class="" placeholder="Ex. John" matInput name="license_no"
+                                    type="text" [(ngModel)]="license_no">
+                                <button mat-button *ngIf="license_no" matSuffix mat-icon-button aria-label="Clear"
+                                    (click)="license_no=''">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </form>
+            </mat-card>
+        </div><!-- /.container-fluid -->
+
+    </section>
+    <!-- /.content -->
+</div>

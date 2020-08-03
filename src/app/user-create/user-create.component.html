@@ -1,0 +1,263 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <mat-card>
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0 text-dark">User Information</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Register User</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </mat-card>
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <mat-card>
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>First Name</mat-label>
+                                <input class="" placeholder="Ex. Do " name="firstName" matInput type="text"
+                                    formControlName="firstName" required>
+                                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                                <button mat-button *ngIf="userForm.value.firstName" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('firstName').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+                                    {{getErrorMessage('firstName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Last Name</mat-label>
+                                <input name="lastName" value="{{userForm.value.lastName}}" class=""
+                                    placeholder="Ex. John" matInput type="text" formControlName="lastName" required>
+                                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                                <button mat-button *ngIf="userForm.value.lastName" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('lastName').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+                                    {{getErrorMessage('lastName')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Email</mat-label>
+                                <input name="email" value="{{userForm.value.email}}" class=""
+                                    placeholder="Ex. example@gmail.com" matInput type="email" formControlName="email"
+                                    required>
+                                <mat-icon matSuffix>mode_edit</mat-icon>
+                                <button mat-button *ngIf="userForm.value.email" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('email').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="email.invalid && email.touched">
+                                    {{getErrorMessage('email')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Password</mat-label>
+                                <input name="password" formControlName="password" matInput
+                                    [type]="hide1 ? 'password' : 'text'" required>
+
+                                <button mat-icon-button matSuffix (click)="hide1 = !hide1"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                    <mat-icon>{{hide1 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <button mat-button *ngIf="userForm.value.password" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('password').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="password.invalid && password.touched">
+                                    {{getErrorMessage('password')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>ConfirmPassword</mat-label>
+                                <input name="confirmPassword" formControlName="confirmPassword" matInput
+                                    [type]="hide ? 'password' : 'text'" required>
+
+                                <button mat-icon-button matSuffix (click)="hide = !hide"
+                                    [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                </button>
+                                <button mat-button *ngIf="userForm.value.confirmPassword" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('confirmPassword').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="confirmPassword.invalid && confirmPassword.touched">
+                                    {{getErrorMessage('confirmPassword')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-2">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Role</mat-label>
+                                <mat-select name='role' formControlName="role" required>
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="role.invalid && role.touched">
+                                    {{getErrorMessage('role')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Telephone</mat-label>
+                                <span matPrefix>+1 &nbsp;</span>
+                                <input name="telephone" value="{{userForm.value.telephone}}" type="tel" matInput
+                                    placeholder="555-555-1234" formControlName="telephone" required>
+                                <mat-icon matSuffix>phone</mat-icon>
+                                <button mat-button *ngIf="userForm.value.telephone" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('telephone').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="telephone.invalid && telephone.touched">
+                                    {{getErrorMessage('telephone')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field color="accent" class="example-form-field">
+                                <mat-label>Gender</mat-label>
+                                <mat-select name='gender' formControlName="gender">
+                                    <mat-option *ngFor="let gender of genders" [value]="gender">
+                                        {{gender}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="gender.invalid && gender.touched">
+                                    {{getErrorMessage('gender')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <mat-form-field color="accent" class="example-form-field">
+                                <mat-label>Date of birth</mat-label>
+                                <input name="dateOfBirth" matInput [matDatepicker]="picker1"
+                                    formControlName="dateOfBirth" required>
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-datepicker #picker1></mat-datepicker>
+                                <mat-error *ngIf="dateOfBirth.invalid && dateOfBirth.touched">
+                                    {{getErrorMessage('dateOfBirth')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <mat-form-field class="example-form-field">
+                            <mat-label>Address 1</mat-label>
+                            <textarea name="address1" formControlName="address1" matInput
+                                placeholder="Ex. 1234 Main St"></textarea>
+                            <mat-icon matSuffix>mode_edit</mat-icon>
+                            <button *ngIf="userForm.value.address1" (click)="userForm.get('address1').reset()"
+                                mat-button matSuffix mat-icon-button aria-label="Clear">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="address1.invalid && address1.touched">
+                                {{getErrorMessage('address1')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class=" form-group">
+                        <mat-form-field class="example-form-field">
+                            <mat-label>Address 2</mat-label>
+                            <textarea name="address2" formControlName="address2" matInput
+                                placeholder="Ex. Apartment, studio, or floor"></textarea>
+                            <mat-icon matSuffix>mode_edit</mat-icon>
+                            <button mat-button *ngIf="userForm.value.address2" matSuffix mat-icon-button
+                                aria-label="Clear" (click)="userForm.get('address2').reset()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <mat-error *ngIf="address2.invalid && address2.touched">
+                                {{getErrorMessage('address2')}}
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-6">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>City</mat-label>
+                                <input name="city" value="{{userForm.value.city}}" class="" matInput type="city"
+                                    formControlName="city">
+                                <mat-icon matSuffix>mode_edit</mat-icon>
+                                <button mat-button *ngIf="userForm.value.city" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('city').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="city.invalid && city.touched">
+                                    {{getErrorMessage('city')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>State</mat-label>
+                                <mat-select name='state' formControlName="state">
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let state of states" [value]="state">{{state}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="state.invalid && state.touched">
+                                    {{getErrorMessage('state')}}
+                                </mat-error>
+                            </mat-form-field>
+
+                        </div>
+                        <div class="form-group col-md-2">
+                            <mat-form-field class="example-form-field">
+                                <mat-label>Zip</mat-label>
+                                <input name="zip" value="{{userForm.value.zip}}" class="" matInput type="zip"
+                                    formControlName="zip">
+                                <mat-icon matSuffix>mode_edit</mat-icon>
+                                <button mat-button *ngIf="userForm.value.zip" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('zip').reset()">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <mat-error *ngIf="zip.invalid && zip.touched">
+                                    {{getErrorMessage('zip')}}
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-sm-4">
+                            <input type="file" formControlName="file" (change)="onFileSelected($event)" id="">
+                        </div>
+                    </div>
+                    <button type="submit" [disabled]="!userForm.valid" mat-raised-button color="primary">Submit
+                    </button>
+                    <!-- <button type="submit" (click)="onUpload()" mat-raised-button color="primary">Submit
+                    </button> -->
+
+                </form>
+            </mat-card>
+        </div><!-- /.container-fluid -->
+
+    </section>
+    <!-- /.content -->
+</div>

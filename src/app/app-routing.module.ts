@@ -1,8 +1,27 @@
+import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
+import { CompanyListComponent } from './company/company-list/company-list.component';
+import { CompanyUpdateComponent } from './company/company-update/company-update.component';
+import { CompanyCreateComponent } from './company/company-create/company-create.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserUpdateComponent } from './user-update/user-update.component';
+import { UserCreateComponent } from './user-create/user-create.component';
+import { Dashboardv1Component } from './dashboardv1/dashboardv1.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 
-const routes: Routes = [];
+const routes: Routes = [
+
+  { path: '', component: Dashboardv1Component },
+  { path: 'user-list', component: UserListComponent },
+  { path: 'user-create', component: UserCreateComponent },
+  { path: 'user-update', component: UserUpdateComponent },
+  { path: 'user-list', component: UserListComponent },
+  { path: 'company-create', component: CompanyCreateComponent },
+  { path: 'company-update', component: CompanyUpdateComponent },
+  { path: 'company-list', component: CompanyListComponent },
+  { path: '**', component: PagenotfoundComponent },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
