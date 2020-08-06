@@ -9,9 +9,10 @@ export class UserService {
   NODE_API_SERVER = 'http://localhost:9000';
   constructor(private _httpClient: HttpClient) { }
 
-  getUser(): Observable<any> {
-    return this._httpClient.get<any>(`${this.NODE_API_SERVER}/user/`);
-
+  readUser(id?: any): Observable<any> {
+    if (id == null)
+      return this._httpClient.get<any>(`${this.NODE_API_SERVER}/user/`);
+    return this._httpClient.get<any>(`${this.NODE_API_SERVER}/user/${id}`);
   }
 
   createUser(fd): Observable<any> {
@@ -21,4 +22,17 @@ export class UserService {
       observe: 'body'
     });
   }
+
+  updateUser(fd, id) {
+    return this._httpClient.put<any>(`${this.NODE_API_SERVER}/user/update/${id}`, fd, {
+      reportProgress: true,
+      observe: 'body'
+    });
+  }
+
+  deleteUser(id): Observable<any> {
+    console.log(id)
+    return this._httpClient.delete<any>(`${this.NODE_API_SERVER}/user/delete/${id}`);
+  }
+
 }

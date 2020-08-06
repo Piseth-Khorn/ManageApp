@@ -4,14 +4,14 @@ export interface User {
     email: string;
     password: string;
     confirmPassword: string,
-    role: string,
-    telephone: number;
+    role: string;
+    phoneNumber: number;
     gender: string;
     dateOfBirth: string;
     address1: string;
     address2: string;
     city: string;
     state: string;
-    zip: string;
+    zipcode: string;
     file: string;
 }

@@ -25,12 +25,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MatNativeDateModule, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { CompanyCreateComponent } from './company/company-create/company-create.component';
 import { CompanyUpdateComponent } from './company/company-update/company-update.component';
@@ -42,7 +43,16 @@ import { SnackbarComponent, testComponent } from './snackbar/snackbar.component'
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { ToastrModule } from 'ngx-toastr';
 import { ToastrComponent } from './toastr/toastr.component';
-
+import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
+import { NgbModule, NgbModalConfig, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  MAT_MOMENT_DATE_FORMATS,
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import "@angular/compiler";
+import { DatePipe } from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,13 +65,15 @@ import { ToastrComponent } from './toastr/toastr.component';
     Dashboradv3Component,
     UserCreateComponent,
     UserListComponent,
+    UserUpdateComponent,
     CompanyCreateComponent,
     CompanyUpdateComponent,
     CompanyListComponent,
     PagenotfoundComponent,
     SnackbarComponent,
     testComponent,
-    ToastrComponent
+    ToastrComponent,
+    DeleteDialogComponent
 
   ],
   imports: [
@@ -82,13 +94,33 @@ import { ToastrComponent } from './toastr/toastr.component';
     MatSnackBarModule,
     MatTableModule,
     MatSortModule,
+    MatMenuModule,
     SimpleNotificationsModule.forRoot(),
     ToastrModule.forRoot(),
     HttpClientModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    NgbModule
 
   ],
-  providers: [SnackbarComponent, ToastrComponent, UserService, UploadService],
+  providers: [
+    SnackbarComponent,
+    ToastrComponent,
+    UserService,
+    UploadService,
+    NgbModalConfig,
+    NgbModal,
+    DatePipe,
+    UserListComponent,
+    NgbActiveModal,
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

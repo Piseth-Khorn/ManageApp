@@ -129,17 +129,17 @@
                         </div>
                         <div class="form-group col-sm-4">
                             <mat-form-field class="example-form-field">
-                                <mat-label>Telephone</mat-label>
+                                <mat-label>PhoneNumber</mat-label>
                                 <span matPrefix>+1 &nbsp;</span>
-                                <input name="telephone" value="{{userForm.value.telephone}}" type="tel" matInput
-                                    placeholder="555-555-1234" formControlName="telephone" required>
+                                <input name="phoneNumber" type="tel" matInput placeholder="555-555-1234"
+                                    formControlName="phoneNumber" required>
                                 <mat-icon matSuffix>phone</mat-icon>
-                                <button mat-button *ngIf="userForm.value.telephone" matSuffix mat-icon-button
-                                    aria-label="Clear" (click)="userForm.get('telephone').reset()">
+                                <button mat-button *ngIf="userForm.value.phoneNumber" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('phoneNumber').reset()">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                                <mat-error *ngIf="telephone.invalid && telephone.touched">
-                                    {{getErrorMessage('telephone')}}
+                                <mat-error *ngIf="phoneNumber.invalid && phoneNumber.touched">
+                                    {{getErrorMessage('phoneNumber')}}
                                 </mat-error>
                             </mat-form-field>
                         </div>
@@ -230,16 +230,15 @@
                         </div>
                         <div class="form-group col-md-2">
                             <mat-form-field class="example-form-field">
-                                <mat-label>Zip</mat-label>
-                                <input name="zip" value="{{userForm.value.zip}}" class="" matInput type="zip"
-                                    formControlName="zip">
+                                <mat-label>ZipCode</mat-label>
+                                <input name="zipcode" class="" matInput type="text" formControlName="zipcode">
                                 <mat-icon matSuffix>mode_edit</mat-icon>
-                                <button mat-button *ngIf="userForm.value.zip" matSuffix mat-icon-button
-                                    aria-label="Clear" (click)="userForm.get('zip').reset()">
+                                <button mat-button *ngIf="userForm.value.zipcode" matSuffix mat-icon-button
+                                    aria-label="Clear" (click)="userForm.get('zipcode').reset()">
                                     <mat-icon>close</mat-icon>
                                 </button>
-                                <mat-error *ngIf="zip.invalid && zip.touched">
-                                    {{getErrorMessage('zip')}}
+                                <mat-error *ngIf="zipcode.invalid && zipcode.touched">
+                                    {{getErrorMessage('zipcode')}}
                                 </mat-error>
                             </mat-form-field>
                         </div>

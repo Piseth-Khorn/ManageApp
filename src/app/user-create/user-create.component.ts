@@ -11,6 +11,7 @@ import { ThrowStmt } from '@angular/compiler';
 import { NotificationsService } from 'angular2-notifications';
 import { ToastrService } from 'ngx-toastr';
 
+
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
@@ -49,16 +50,18 @@ export class UserCreateComponent implements OnInit {
       password: ['', [
         Validators.required,
         Validators.pattern(this.pass),
+        Validators.minLength(8)
       ]],
       confirmPassword: ['', [
         Validators.required,
-        Validators.pattern(this.pass)
+        Validators.pattern(this.pass),
+        Validators.minLength(8)
       ]],
       role: ['', [
         Validators.required,
         Validators.maxLength(30)
       ]],
-      telephone: [null, [
+      phoneNumber: [null, [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(14),
@@ -86,7 +89,7 @@ export class UserCreateComponent implements OnInit {
         Validators.required,
         Validators.maxLength(50)
       ]],
-      zip: '',
+      zipcode: '',
       file: ''
 
     });
@@ -110,8 +113,8 @@ export class UserCreateComponent implements OnInit {
   get role() {
     return this.userForm.get('role');
   }
-  get telephone() {
-    return this.userForm.get('telephone');
+  get phoneNumber() {
+    return this.userForm.get('phoneNumber');
   }
   get dateOfBirth() {
     return this.userForm.get('dateOfBirth');
@@ -128,8 +131,8 @@ export class UserCreateComponent implements OnInit {
   get state() {
     return this.userForm.get('state');
   }
-  get zip() {
-    return this.userForm.get('zip');
+  get zipcode() {
+    return this.userForm.get('zipcode');
   }
   get gender() {
     return this.userForm.get('gender');
@@ -152,12 +155,15 @@ export class UserCreateComponent implements OnInit {
     }
     if (ms == 'password') {
       if (this.userForm.get('password').hasError('required')) return this.requiredString;
+      if (this.userForm.get('password').hasError('minlength')) return 'Must be at least 8 characters long';
       if (this.userForm.get('password').hasError('pattern')) return 'Must have one letter, and one number';
-      if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return 'Password does not much confirmPassword!';
+      if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return 'Password does not match confirmPassword!';
     }
     if (ms == 'confirmPassword') {
       if (this.userForm.get('confirmPassword').hasError('required')) return this.requiredString;
-      return this.userForm.get('confirmPassword').hasError('pattern') ? 'Must have one letter, and one number' : '';
+      if (this.userForm.get('confirmPassword').hasError('minlength')) return 'Must be at least 8 characters long';
+      if (this.userForm.get('confirmPassword').hasError('pattern')) return 'Must have one letter, and one number';
+      if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return 'Password does not match confirmPassword!';
     }
     if (ms == 'gender') return this.userForm.get('gender').hasError('required') ? this.requiredString : '';
     if (ms == 'role') {
@@ -165,10 +171,10 @@ export class UserCreateComponent implements OnInit {
       return this.userForm.get('role').hasError('maxlength') ? 'Must be less than 30 characters' : '';
     }
 
-    if (ms == 'telephone') {
-      if (this.userForm.get('telephone').hasError('required')) return this.requiredString;
-      if (this.userForm.get('telephone').hasError('minlength')) return 'must have be at least 10 digit to 14.';
-      if (this.userForm.get('telephone').hasError('maxlength')) return 'must have be at least 10 digit to 14.';
+    if (ms == 'phoneNumber') {
+      if (this.userForm.get('phoneNumber').hasError('required')) return this.requiredString;
+      if (this.userForm.get('phoneNumber').hasError('minlength')) return 'must have be at least 10 digit to 14.';
+      if (this.userForm.get('phoneNumber').hasError('maxlength')) return 'must have be at least 10 digit to 14.';
     }
 
     if (ms == 'address1') {
@@ -188,7 +194,7 @@ export class UserCreateComponent implements OnInit {
       if (this.userForm.get('city').hasError('required')) return this.requiredString;
       return this.userForm.get('city').hasError('maxlength') ? 'city must be less than 50 characters' : '';
     }
-    if (ms == 'zip') return this.userForm.get('zip').hasError('required') ? this.requiredString : '';
+    if (ms == 'zipcode') return this.userForm.get('zipcode').hasError('required') ? this.requiredString : '';
     if (ms == 'dateOfBirth') return this.userForm.get('dateOfBirth').hasError('required') ? this.requiredString : '';
 
   }
@@ -196,6 +202,7 @@ export class UserCreateComponent implements OnInit {
     if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return true;
   }
   onSubmit() {
+
     const fd = new FormData();
     if (this.selectedFile != null)
       fd.append('file', this.selectedFile, this.selectedFile.name);
@@ -205,20 +212,21 @@ export class UserCreateComponent implements OnInit {
     fd.append('password', this.userForm.get('password').value);
     fd.append('confirmPassword', this.userForm.get('confirmPassword').value);
     fd.append('role', this.userForm.get('role').value);
-    fd.append('telephone', this.userForm.get('telephone').value);
+    fd.append('phoneNumber', this.userForm.get('phoneNumber').value);
     fd.append('gender', this.userForm.get('gender').value);
     fd.append('dateOfBirth', this.userForm.get('dateOfBirth').value);
     fd.append('address1', this.userForm.get('address1').value);
     fd.append('address2', this.userForm.get('address2').value);
     fd.append('city', this.userForm.get('city').value);
     fd.append('state', this.userForm.get('state').value);
-    fd.append('zip', this.userForm.get('zip').value);
+    fd.append('zipcode', this.userForm.get('zipcode').value);
     if (this.userForm.invalid) return;
     this.isValidFormSubmitted = true;
     if (this.getValidatePassword() == true) {
-      this._getDialogSMG.getWarningSMG('Note', 'Password and confirmPassword does not much together!');
+      this._getDialogSMG.getWarningSMG('Note', 'Password and confirmPassword does not match!!');
       return;
     }
+
     this.userService.createUser(fd).subscribe((res) => {
       console.log('User Created', res);
       this._getDialogSMG.getSuccessSMG(null, 'Data transaction successfully');
