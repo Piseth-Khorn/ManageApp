@@ -53,6 +53,10 @@ import {
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import "@angular/compiler";
 import { DatePipe } from '@angular/common';
+import { RolecreateComponent } from './role/rolecreate/rolecreate.component';
+import { RoleUpdateComponent } from './role/role-update/role-update.component';
+import { RoleListComponent } from './role/role-list/role-list.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -73,7 +77,11 @@ import { DatePipe } from '@angular/common';
     SnackbarComponent,
     testComponent,
     ToastrComponent,
-    DeleteDialogComponent
+    DeleteDialogComponent,
+    RolecreateComponent,
+    RoleUpdateComponent,
+    RoleListComponent,
+
 
   ],
   imports: [

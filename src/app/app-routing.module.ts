@@ -1,3 +1,6 @@
+import { RoleUpdateComponent } from './role/role-update/role-update.component';
+import { RolecreateComponent } from './role/rolecreate/rolecreate.component';
+import { RoleListComponent } from './role/role-list/role-list.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { CompanyListComponent } from './company/company-list/company-list.component';
 import { CompanyUpdateComponent } from './company/company-update/company-update.component';
@@ -20,6 +23,9 @@ const routes: Routes = [
   { path: 'company-create', component: CompanyCreateComponent },
   { path: 'company-update', component: CompanyUpdateComponent },
   { path: 'company-list', component: CompanyListComponent },
+  { path: 'role-list', component: RoleListComponent },
+  { path: 'role-create', component: RolecreateComponent },
+  { path: 'role-update', component: RoleUpdateComponent },
   { path: '**', component: PagenotfoundComponent },
 ];
 

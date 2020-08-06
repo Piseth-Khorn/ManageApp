@@ -1,3 +1,4 @@
+import { ErrorService } from './../service/error.service';
 import { UserListComponent } from './../user-list/user-list.component';
 import { ToastrComponent } from './../toastr/toastr.component';
 import { DatePipe } from '@angular/common';
@@ -27,7 +28,8 @@ export class UserUpdateComponent implements OnInit {
   states = ['PP', 'KK', 'Other']
   pass = '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$';
   requiredString = 'You must enter value';
-  constructor(private _listUser: UserListComponent, private _msDialog: ToastrComponent, private _activeNgbModal: NgbActiveModal, private _userService: UserService, private fb: FormBuilder, private _dateFormate: DateFormateService, public _datePip: DatePipe) { }
+  constructor(private _listUser: UserListComponent, private _msDialog: ToastrComponent, private _activeNgbModal: NgbActiveModal,
+    private _userService: UserService, private fb: FormBuilder, private _dateFormate: DateFormateService, public _datePip: DatePipe, public _errorService: ErrorService) { }
 
   ngOnInit(): void {
     this.getUser();
@@ -137,72 +139,11 @@ export class UserUpdateComponent implements OnInit {
   }
 
   getErrorMessage(ms) {
-    if (ms == 'email') {
-      if (this.userForm.get('email').hasError('required')) return this.requiredString;
-      if (this.userForm.get('email').hasError('email')) return 'Not a Valid email';
-    }
-    if (ms == 'firstName') {
-      if (this.userForm.get('firstName').hasError('required')) return this.requiredString;
-      if (this.userForm.get('firstName').hasError('minlength')) return 'Name must be at least 2 characters long.';
-    }
-
-    if (ms == 'lastName') {
-      if (this.userForm.get('lastName').hasError('required')) return this.requiredString;
-      if (this.userForm.get('lastName').hasError('minlength')) return 'Name must be at least 2 characters long.';
-
-    }
-    if (ms == 'password') {
-      if (this.userForm.get('password').hasError('required')) return this.requiredString;
-      if (this.userForm.get('password').hasError('minlength')) return 'Must be at least 8 characters long';
-      if (this.userForm.get('password').hasError('pattern')) return 'Must have one letter, and one number';
-      if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return 'Password does not match confirmPassword!';
-    }
-    if (ms == 'confirmPassword') {
-      if (this.userForm.get('confirmPassword').hasError('required')) return this.requiredString;
-      if (this.userForm.get('confirmPassword').hasError('minlength')) return 'Must be at least 8 characters long';
-      if (this.userForm.get('confirmPassword').hasError('pattern')) return 'Must have one letter, and one number';
-      if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return 'Password does not match confirmPassword!';
-    }
-    if (ms == 'gender') return this.userForm.get('gender').hasError('required') ? this.requiredString : '';
-    if (ms == 'role') {
-      if (this.userForm.get('role').hasError('required')) return this.requiredString;
-      return this.userForm.get('role').hasError('maxlength') ? 'Must be less than 30 characters' : '';
-    }
-
-    if (ms == 'phoneNumber') {
-      if (this.userForm.get('phoneNumber').hasError('required')) return this.requiredString;
-      if (this.userForm.get('phoneNumber').hasError('minlength')) return 'must have be at least 10 digit to 14.';
-      if (this.userForm.get('phoneNumber').hasError('maxlength')) return 'must have be at least 10 digit to 14.';
-    }
-
-    if (ms == 'address1') {
-      if (this.userForm.get('address1').hasError('required')) return this.requiredString;
-      return this.userForm.get('address1').hasError('maxlength') ? 'Address must be least than 200 characters' : '';
-    }
-    if (ms == 'address2') {
-      if (this.userForm.get('address2').hasError('required')) return this.requiredString;
-      return this.userForm.get('address2').hasError('maxlength') ? 'Address must be least than 200 characters' : '';
-    }
-
-    if (ms == 'state') {
-      if (this.userForm.get('state').hasError('required')) return this.requiredString;
-      return this.userForm.get('state').hasError('maxlength') ? 'State must be less than 50 characters.' : '';
-    }
-    if (ms == 'city') {
-      if (this.userForm.get('city').hasError('required')) return this.requiredString;
-      return this.userForm.get('city').hasError('maxlength') ? 'city must be less than 50 characters' : '';
-    }
-    if (ms == 'zipcode') return this.userForm.get('zipcode').hasError('required') ? this.requiredString : '';
-    if (ms == 'dateOfBirth') return this.userForm.get('dateOfBirth').hasError('required') ? this.requiredString : '';
-
-  }
-  getValidatePassword(): boolean {
-    if (this.userForm.get('password').value != this.userForm.get('confirmPassword').value) return true;
+    return this._errorService.getErrorMessage(ms, this.userForm);
   }
   getUser() {
     this._userService.readUser(this.name).subscribe(result => {
       this.user = result;
-      console.log(result)
       this.userForm.setValue({
         firstName: this.user.firstName,
         lastName: this.user.lastName,
@@ -221,41 +162,6 @@ export class UserUpdateComponent implements OnInit {
         file: ''
       });
     });
-
-    // this.userForm = new FormGroup({
-    //   firstName: new FormControl(),
-    //   lastName: new FormControl(),
-    //   email: new FormControl(),
-    //   password: new FormControl(),
-    //   confirmPassword: new FormControl(),
-    //   role: new FormControl(),
-    //   phoneNumber: new FormControl(),
-    //   gender: new FormControl(),
-    //   dateOfBirth: new FormControl(),
-    //   address1: new FormControl(),
-    //   address2: new FormControl(),
-    //   city: new FormControl(),
-    //   state: new FormControl(),
-    //   zipcode: new FormControl(),
-    //   file: new FormControl(),
-    // });
-    // this.userForm.setValue({
-    //   firstName: this.user.firstName,
-    //   lastName: this.user.lastName,
-    //   email: this.user.email,
-    //   password: this.user.password,
-    //   confirmPassword: this.user.confirmPassword,
-    //   role: this.user.role,
-    //   phoneNumber: this.user.phoneNumber,
-    //   gender: this.user.gender,
-    //   dateOfBirth: this.user.dateOfBirth,
-    //   address1: this.user.address1,
-    //   address2: this.user.address2,
-    //   city: this.user.city,
-    //   state: this.user.state,
-    //   zipcode: this.user.zipcode,
-    //   file: this.user.file,
-    // });
   }
   onFileSelected(event) {
     this.selectedFile = <File>event.target.files[0];
@@ -282,7 +188,7 @@ export class UserUpdateComponent implements OnInit {
     fd.append('state', this.userForm.get('state').value);
     fd.append('zipcode', this.userForm.get('zipcode').value);
     if (this.userForm.invalid) return;
-    if (this.getValidatePassword() == true) { this._msDialog.getWarningSMG('Note', 'Password and ConfirmPassword does not match!!'); return; }
+    if (this._errorService.getValidatePassword(this.userForm) == true) { this._msDialog.getWarningSMG('Note', 'Password and ConfirmPassword does not match!!'); return; }
     this._userService.updateUser(fd, this.name).subscribe((res) => {
       console.log('User Updated', res);
       this._msDialog.getSuccessSMG(null, 'User Update successfully');
