@@ -1,0 +1,6 @@
+.get_center {
+    right: 50%;
+    bottom: 70%;
+    transform: translate(50%,50%);
+    position: absolute;
+}

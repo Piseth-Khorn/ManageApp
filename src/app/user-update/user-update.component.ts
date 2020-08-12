@@ -16,7 +16,7 @@ import { NgbModalConfig, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-boots
 })
 export class UserUpdateComponent implements OnInit {
 
-  @Input() name;
+  @Input() id;
   user: User;
   isValidFormSubmitted = false;
   selectedFile: File = null;
@@ -142,7 +142,7 @@ export class UserUpdateComponent implements OnInit {
     return this._errorService.getErrorMessage(ms, this.userForm);
   }
   getUser() {
-    this._userService.readUser(this.name).subscribe(result => {
+    this._userService.readUser(this.id).subscribe(result => {
       this.user = result;
       this.userForm.setValue({
         firstName: this.user.firstName,
@@ -189,7 +189,7 @@ export class UserUpdateComponent implements OnInit {
     fd.append('zipcode', this.userForm.get('zipcode').value);
     if (this.userForm.invalid) return;
     if (this._errorService.getValidatePassword(this.userForm) == true) { this._msDialog.getWarningSMG('Note', 'Password and ConfirmPassword does not match!!'); return; }
-    this._userService.updateUser(fd, this.name).subscribe((res) => {
+    this._userService.updateUser(fd, this.id).subscribe((res) => {
       console.log('User Updated', res);
       this._msDialog.getSuccessSMG(null, 'User Update successfully');
     }, (err) => {

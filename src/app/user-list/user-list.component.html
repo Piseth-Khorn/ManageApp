@@ -23,10 +23,19 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <mat-form-field>
-                <mat-label>Search</mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-            </mat-form-field>
+            <div class="row">
+                <dir class="form-group col-sm-10">
+                    <a routerLink="/user-create" routerLinkActive="router-link-active" mat-raised-button
+                        color="primary">Add User</a>
+
+                </dir>
+                <div class="form-group col-sm-2">
+                    <mat-form-field style='width: 100%;'>
+                        <mat-label>Search</mat-label>
+                        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+                    </mat-form-field>
+                </div>
+            </div>
 
             <div class="mat-elevation-z8">
                 <table mat-table [dataSource]="dataSource" matSort>

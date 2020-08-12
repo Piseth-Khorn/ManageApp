@@ -120,7 +120,8 @@
                                 <mat-label>Role</mat-label>
                                 <mat-select name='role' formControlName="role" required>
                                     <mat-option>None</mat-option>
-                                    <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
+                                    <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}
+                                    </mat-option>
                                 </mat-select>
                                 <mat-error *ngIf="role.invalid && role.touched">
                                     {{getErrorMessage('role')}}
@@ -131,7 +132,7 @@
                             <mat-form-field class="example-form-field">
                                 <mat-label>PhoneNumber</mat-label>
                                 <span matPrefix>+1 &nbsp;</span>
-                                <input name="phoneNumber" type="tel" matInput placeholder="555-555-1234"
+                                <input name="phoneNumber" type="text" matInput placeholder="555-555-1234"
                                     formControlName="phoneNumber" required>
                                 <mat-icon matSuffix>phone</mat-icon>
                                 <button mat-button *ngIf="userForm.value.phoneNumber" matSuffix mat-icon-button

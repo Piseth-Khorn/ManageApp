@@ -1,5 +1,5 @@
 import { Role } from './../interface/role';
-import { Observable } from 'rxjs';
+import { Observable, empty } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -10,8 +10,11 @@ export class RoleService {
   NODE_API_SERVER = 'http://localhost:9000/role';
   constructor(private _httpClient: HttpClient) { }
 
-  readRole(id?: any): Observable<Role> {
-    return this._httpClient.get<Role>(`${this.NODE_API_SERVER}`);
+  readRole(id?: any): Observable<any> {
+    //console.log(id)
+    if (id == null)
+      return this._httpClient.get<any>(`${this.NODE_API_SERVER}`);
+    return this._httpClient.get<any>(`${this.NODE_API_SERVER}/${id}`);
   }
 
   createRole(role: Role): Observable<Role> {

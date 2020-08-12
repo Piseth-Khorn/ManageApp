@@ -52,15 +52,9 @@ export class UserListComponent implements OnInit {
   getUserData() {
     const item = [];
     this._userService.readUser().subscribe(res => {
-
       this.dataSource = new MatTableDataSource(res);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      // for (let i = 0; i < res.length; i++)
-      //   item.push({ index: i })
-      // //console.log(item);
-      // const data = Object.assign(item, res);
-      // console.log(data);
     });
 
   }
@@ -68,23 +62,23 @@ export class UserListComponent implements OnInit {
     this._modalConfig.backdrop = "static";
     this._modalConfig.size = 'xl';
     const modalRef = this._modalService.open(UserUpdateComponent);
-    modalRef.componentInstance.name = param;
+    modalRef.componentInstance.id = param;
 
     modalRef.result.then((res) => {
       console.log('close modal ');
       this.ngOnInit();
     }, (res) => {
-      console.log('Close icon clicked or backdrop clicked ');
+      console.log('Close icon clicked or press ESC ');
     });
 
   }
 
-  onDelete(id: any, content?: any) {
+  onDelete(id: any) {
 
     //console.log(id)
     const _dialogRef = this._dialogBox.open(DeleteDialogComponent, {
       width: '250px',
-      data: { id: id, content: content }
+      data: { id: id, content: 'user' }
     });
     _dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');

@@ -1,3 +1,5 @@
+import { Role } from './../interface/role';
+import { RoleService } from './../service/role.service';
 import { ErrorService } from './../service/error.service';
 import { UploadService } from './../service/upload.service';
 import { HttpClient, HttpEventType } from '@angular/common/http';
@@ -26,14 +28,14 @@ export class UserCreateComponent implements OnInit {
   hide1 = true;
   hide = true;
   genders = ['Male', 'Female', 'Other']
-  roles = ['admin', 'user', 'visitor']
+  roles: Role;
   states = ['PP', 'KK', 'Other']
   pass = '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$';
   requiredString = 'You must enter value';
   constructor(private fb: FormBuilder, private userService: UserService, public dialog: MatDialog,
     private _snackBar: SnackbarComponent, private _notificationService: NotificationsService,
     private _toastService: ToastrService, private _getDialogSMG: ToastrComponent,
-    private uploadService: UploadService, public _errorService: ErrorService) { }
+    private uploadService: UploadService, public _errorService: ErrorService, private _roleService: RoleService) { }
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
@@ -97,7 +99,9 @@ export class UserCreateComponent implements OnInit {
       file: ''
 
     });
-
+    this._roleService.readRole().subscribe((result) => {
+      this.roles = result;
+    });
   }
   get firstName() {
     return this.userForm.get('firstName');
@@ -146,7 +150,7 @@ export class UserCreateComponent implements OnInit {
     return this._errorService.getErrorMessage(ms, this.userForm);
   }
   onSubmit() {
-
+    this.userForm.get('zipcode').setValue(1);
     const fd = new FormData();
     if (this.selectedFile != null)
       fd.append('file', this.selectedFile, this.selectedFile.name);
@@ -172,14 +176,17 @@ export class UserCreateComponent implements OnInit {
     }
 
     this.userService.createUser(fd).subscribe((res) => {
-      console.log('User Created', res);
+      // console.log('User Created', res);
       this._getDialogSMG.getSuccessSMG(null, 'Data transaction successfully');
       this.userForm.reset();
     }, (err) => {
+      if (err == 'Email already exists') {
+        this._getDialogSMG.getErrorSMG(err.statusText, err.error);
+        return;
+      }
+      this._getDialogSMG.getErrorSMG(err.statusText, err.error);
       console.log(err);
-      this._getDialogSMG.getErrorSMG('Error', err.error.text);
     });
-
   }
 
 
