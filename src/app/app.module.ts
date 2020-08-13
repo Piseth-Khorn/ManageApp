@@ -1,3 +1,4 @@
+import { DefaultComponent } from './layout/default/default.component';
 import { Dashboardv1Component } from './dashboardv1/dashboardv1.component';
 import { LoginComponent } from './login/login.component';
 import { BlankModule } from './layout/blank/blank.module';
@@ -40,7 +41,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     BrowserAnimationsModule,
   ],
-  providers: [
+  providers: [,
+    DefaultComponent,
     LoginComponent,
     Dashboardv1Component,
     AppComponent,

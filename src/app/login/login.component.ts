@@ -1,3 +1,4 @@
+import { DefaultComponent } from './../layout/default/default.component';
 import { ToastrComponent } from './../toastr/toastr.component';
 import { ToastrService } from 'ngx-toastr';
 import { Dashboardv1Component } from './../dashboardv1/dashboardv1.component';
@@ -17,7 +18,9 @@ import { threadId } from 'worker_threads';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   constructor(private fb: FormBuilder, public _authService: AuthService,
-     public _router: Router,public _loaction:Location,@Inject(DOCUMENT) private document:Document,public _getDialogSMG:ToastrComponent) {
+     public _router: Router,public _loaction:Location,
+     @Inject(DOCUMENT) private document:Document,public _getDialogSMG:ToastrComponent,
+     public _default:DefaultComponent) {
     this.loginForm = this.fb.group({
       email: ['', [
         Validators.required,
@@ -42,13 +45,10 @@ export class LoginComponent implements OnInit {
     }
     this._authService.login(this.loginForm.value)
     .subscribe(async(res) => {
-     await localStorage.setItem('access-token', res);
-     await this._router.navigate(['/']);
-      await this.document.location.reload();
-
-      // this._router.navigateByUrl('/',{skipLocationChange:false}).then(async()=>{
-      //  await this.document.location.reload();
-      // });
+      await localStorage.setItem('access-token', res);
+      this._router.navigateByUrl('/',{skipLocationChange:false}).then(async()=>{
+       await this.document.location.reload();
+      });
     }, (error) => {
       this._getDialogSMG.getErrorSMG(error.status, error.error);
     }

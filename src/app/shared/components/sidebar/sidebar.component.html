@@ -15,7 +15,7 @@
                 <img src="http://localhost:9000/{{image}}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">{{user.firstName}} {{user.lastName}}</a>
             </div>
         </div>
 
@@ -248,12 +248,7 @@
                                 <p>Register User</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <button (click)="logOut()" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>jsGrid</p>
-                            </button>
-                        </li>
+        
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
@@ -277,12 +272,7 @@
                                 <p>Add</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="pages/tables/jsgrid.html" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>jsGrid</p>
-                            </a>
-                        </li>
+    
                     </ul>
                 </li>
                 <li class="nav-header">EXAMPLES</li>
@@ -546,11 +536,11 @@
                         <p>Level 1</p>
                     </a>
                 </li>
-                <li class="nav-header">LABELS</li>
+                <li class="nav-header">Option</li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" (click)="logOut()" class="nav-link">
                         <i class="nav-icon far fa-circle text-danger"></i>
-                        <p class="text">Important</p>
+                        <p class="text">Logout</p>
                     </a>
                 </li>
                 <li class="nav-item">

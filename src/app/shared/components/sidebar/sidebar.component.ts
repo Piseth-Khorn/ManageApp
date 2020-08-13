@@ -1,3 +1,4 @@
+import { async } from '@angular/core/testing';
 import { LoginComponent } from './../../../login/login.component';
 import { Location,DOCUMENT } from '@angular/common';
 import { Router } from '@angular/router';
@@ -47,8 +48,8 @@ export class SidebarComponent implements OnInit {
   }
   logOut() {
     if (this._authService.logOut() == true) {
-      this._Router.navigateByUrl("/login",{skipLocationChange:true}).then(()=>{
-        this.document.location.reload();
+      this._Router.navigateByUrl("/login",{skipLocationChange:true}).then(async()=>{
+       await this.document.location.reload();
       });
     }
   }
