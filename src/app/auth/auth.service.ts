@@ -37,13 +37,7 @@ export class AuthService {
       /* other options here */
       responseType: 'json'
     }
-    return this._httpClient.post(`${this.API_URL}/auth`, user, { responseType: "text" })
-      .subscribe((res) => {
-        localStorage.setItem('access-token', res);
-      }, (error) => {
-        this._getDialogSMG.getErrorSMG(error.status, error.error);
-      }
-      );
+    return this._httpClient.post(`${this.API_URL}/auth`, user, { responseType: "text" });
   }
 
   getUserProfile(id): Observable<any> {
