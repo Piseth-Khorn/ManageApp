@@ -48,12 +48,10 @@ export class UserUpdateComponent implements OnInit {
         Validators.email
       ]],
       password: ['', [
-        Validators.required,
         Validators.pattern(this.pass),
         Validators.minLength(8)
       ]],
       confirmPassword: ['', [
-        Validators.required,
         Validators.pattern(this.pass),
         Validators.minLength(8)
       ]],
@@ -148,8 +146,8 @@ export class UserUpdateComponent implements OnInit {
         firstName: this.user.firstName,
         lastName: this.user.lastName,
         email: this.user.email,
-        password: this.user.password,
-        confirmPassword: this.user.confirmPassword,
+        password: '',
+        confirmPassword: '',
         role: this.user.role,
         phoneNumber: this.user.phoneNumber,
         gender: this.user.gender,

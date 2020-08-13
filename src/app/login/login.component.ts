@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './../auth/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  constructor(private fb: FormBuilder, public _authService: AuthService, public _router: Router) {
+  constructor(private fb: FormBuilder, public _authService: AuthService,
+     public _router: Router,public _loaction:Location) {
     this.loginForm = this.fb.group({
       email: ['', [
         Validators.required,
@@ -25,7 +27,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
   get f() {
-    return this.loginForm.contains
+    return this.loginForm.controls;
   }
   loginUser() {
 
@@ -35,7 +37,10 @@ export class LoginComponent implements OnInit {
     }
     const result = this._authService.login(this.loginForm.value);
     result.add(() => {
-      this._router.navigate(['/']);
+     this._router.navigateByUrl("/",{skipLocationChange:true}).then(()=>{
+       console.log(decodeURI(this._loaction.path()))
+       this._router.navigate([decodeURI(this._loaction.path())]);
+     })
     });
   }
 }

@@ -84,7 +84,7 @@
                         <mat-form-field class="example-form-field">
                             <mat-label>Password</mat-label>
                             <input name="password" formControlName="password" matInput
-                                [type]="hide1 ? 'password' : 'text'" required>
+                                [type]="hide1 ? 'password' : 'text'" >
 
                             <button mat-icon-button matSuffix (click)="hide1 = !hide1"
                                 [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
@@ -103,7 +103,7 @@
                         <mat-form-field class="example-form-field">
                             <mat-label>ConfirmPassword</mat-label>
                             <input name="confirmPassword" formControlName="confirmPassword" matInput
-                                [type]="hide ? 'password' : 'text'" required>
+                                [type]="hide ? 'password' : 'text'" >
 
                             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
                                 [attr.aria-pressed]="hide">
