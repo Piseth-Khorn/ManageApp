@@ -12,9 +12,10 @@ import { optionsFactory } from 'angular2-notifications';
   providedIn: 'root'
 })
 export class AuthService {
+
   _appRoot;
   API_URL: string = 'http://localhost:9000';
-  headers = new HttpHeaders().set('Content-Type', 'application/json');
+  headers = new HttpHeaders().set('access-token',localStorage.getItem('access-token'));
   currentUser = {};
   constructor(
     private _httpClient: HttpClient,
@@ -23,30 +24,27 @@ export class AuthService {
 
   }
 
+  getUserId():Observable<any>{
+   return this._httpClient.get<any>(`${this.API_URL}/auth`,{headers:this.headers,responseType:'json'}).pipe(
+      map((res:Response)=>{
+        return res||{}
+      }),catchError(this.handleError)
+    );
+  }
+
   login(user: User) {
     const requestOptions: Object = {
       /* other options here */
       responseType: 'json'
     }
-    return this._httpClient.post(`${this.API_URL}/auth`, user, { responseType: "text" })
-      .subscribe((res) => {
-        localStorage.setItem('access-token', res);
-      }, (error) => {
-        this._getDialogSMG.getErrorSMG(error.status, error.error);
-      }
-      );
-
-
-    // return this._httpClient.post(`${this.API_URL}/auth`, user)
-    //   .subscribe((res: any) => {
-    //     localStorage.setItem('access-token', res);
-    //   }, (err) => {
-    //     this._getDialogSMG.getErrorSMG(err.status, err.error);
-    //   });
+    return this._httpClient.post(`${this.API_URL}/auth`, user, { responseType: "text" });
   }
 
   getUserProfile(id): Observable<any> {
-    return this._httpClient.get(`${this.API_URL}/users/${id}`, { headers: this.headers }).pipe(
+    return this._httpClient.get<any>(`${this.API_URL}/user/${id}`, {
+       headers: this.headers,
+      responseType:'json'
+      }).pipe(
       map((res: Response) => {
         return res || {}
       }), catchError(this.handleError));

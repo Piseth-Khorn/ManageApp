@@ -1,3 +1,5 @@
+import { Dashboardv1Component } from './dashboardv1/dashboardv1.component';
+import { LoginComponent } from './login/login.component';
 import { BlankModule } from './layout/blank/blank.module';
 import { RouterModule } from '@angular/router';
 import { DefaultModule } from './layout/default/default.module';
@@ -39,6 +41,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserAnimationsModule,
   ],
   providers: [
+    LoginComponent,
+    Dashboardv1Component,
     AppComponent,
     SnackbarComponent,
     ToastrComponent,
