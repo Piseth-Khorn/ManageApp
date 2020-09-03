@@ -1,3 +1,5 @@
+import { RoleDataSource } from './../../service/role-data-source';
+
 import { RoleUpdateComponent } from './../role-update/role-update.component';
 import { RolecreateComponent } from './../rolecreate/rolecreate.component';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -9,23 +11,62 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { Role } from './../../interface/role';
 import { MatTableDataSource } from '@angular/material/table';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { fromEvent } from 'rxjs';
+import {
+  debounce,
+  debounceTime,
+  distinctUntilChanged,
+  tap,
+} from 'rxjs/operators';
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
-  styleUrls: ['./role-list.component.css']
+  styleUrls: ['./role-list.component.css'],
 })
 export class RoleListComponent implements OnInit {
+  roleDataSource: RoleDataSource;
   displayedColumns: string[] = ['_id', 'name', 'createDate', 'action'];
   dataSource: MatTableDataSource<Role>;
   role: Role;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  constructor(private _roleService: RoleService, public _dataPip: DatePipe, private _MatDialog: MatDialog, private _ngbModal: NgbModal, private _ModalConfig: NgbModalConfig) { }
+  @ViewChild('input', { static: true }) Input: ElementRef;
+  constructor(
+    private _roleService: RoleService,
+    public _dataPip: DatePipe,
+    private _MatDialog: MatDialog,
+    private _ngbModal: NgbModal,
+    private _ModalConfig: NgbModalConfig,
+    private _route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.roleDataSource = new RoleDataSource(this._roleService);
+    this.roleDataSource.loadRoles(1, '', 'asc', 0, 3);
     this.getRole();
+  }
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    fromEvent(this.Input.nativeElement, 'keyup').pipe(
+      debounceTime(150),
+      distinctUntilChanged(),
+      tap(() => {
+        this.paginator.pageIndex = 0;
+        this.loadRolePage();
+      })
+    );
+  }
+  loadRolePage() {
+    this.roleDataSource.loadRoles(
+      1,
+      this.Input.nativeElement.value,
+      this.sort.direction,
+      this.paginator.pageIndex,
+      this.paginator.pageSize
+    );
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -45,16 +86,19 @@ export class RoleListComponent implements OnInit {
   }
 
   onOpenModal() {
-    this._ModalConfig.size = "lg";
+    this._ModalConfig.size = 'lg';
     this._ModalConfig.backdrop = 'static';
     const modalRef = this._ngbModal.open(RolecreateComponent);
 
-    modalRef.result.then((res) => {
-      this.ngOnInit();
-    }, (err) => {
-      console.log(err);
-      console.log('Close icon clicked or press ESC');
-    });
+    modalRef.result.then(
+      (res) => {
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log(err);
+        console.log('Close icon clicked or press ESC');
+      }
+    );
   }
 
   onUpdate(id: any) {
@@ -63,11 +107,14 @@ export class RoleListComponent implements OnInit {
     const modalRef = this._ngbModal.open(RoleUpdateComponent);
     modalRef.componentInstance.id = id;
 
-    modalRef.result.then(res => {
-      this.ngOnInit();
-    }, (err) => {
-      console.log('Click icon close or press ESC');
-    });
+    modalRef.result.then(
+      (res) => {
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log('Click icon close or press ESC');
+      }
+    );
   }
 
   onDelete(id: any) {
@@ -75,15 +122,20 @@ export class RoleListComponent implements OnInit {
       width: '250px',
       data: {
         id: id,
-        content: 'role'
+        content: 'role',
+      },
+    });
+
+    dialoRef.afterClosed().subscribe(
+      (res) => {
+        this.ngOnInit();
+      },
+      (err) => {
+        console.log(err);
       }
-    });
-
-    dialoRef.afterClosed().subscribe((res) => {
-      this.ngOnInit();
-    }, (err) => {
-      console.log(err);
-    });
-
+    );
+  }
+  onRowCliked(row) {
+    console.log('Row Clicked: ', row);
   }
 }

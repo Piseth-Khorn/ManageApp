@@ -7,51 +7,51 @@ import { Router } from '@angular/router';
 import { AuthService } from './../auth/auth.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
-import {Location,DOCUMENT} from '@angular/common';
-import { threadId } from 'worker_threads';
+import { Location, DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  constructor(private fb: FormBuilder, public _authService: AuthService,
-     public _router: Router,public _loaction:Location,
-     @Inject(DOCUMENT) private document:Document,public _getDialogSMG:ToastrComponent,
-     public _default:DefaultComponent) {
+  constructor(
+    private fb: FormBuilder,
+    public _authService: AuthService,
+    public _router: Router,
+    public _loaction: Location,
+    @Inject(DOCUMENT) private document: Document,
+    public _getDialogSMG: ToastrComponent,
+    public _default: DefaultComponent
+  ) {
     this.loginForm = this.fb.group({
-      email: ['', [
-        Validators.required,
-        Validators.email
-      ]],
-      password: ['', [
-        Validators.required
-      ]]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   get f() {
     return this.loginForm.controls;
   }
- loginUser():Promise<boolean> {
-
+  loginUser(): Promise<boolean> {
     if (this.loginForm.invalid) {
       alert('Please Enter Values');
       return;
     }
-    this._authService.login(this.loginForm.value)
-    .subscribe(async(res) => {
-      await localStorage.setItem('access-token', res);
-      this._router.navigateByUrl('/',{skipLocationChange:false}).then(async()=>{
-       await this.document.location.reload();
-      });
-    }, (error) => {
-      this._getDialogSMG.getErrorSMG(error.status, error.error);
-    }
+    this._authService.login(this.loginForm.value).subscribe(
+      async (res) => {
+        await localStorage.setItem('access-token', res);
+        this._router
+          .navigateByUrl('/', { skipLocationChange: false })
+          .then(async () => {
+            await this.document.location.reload();
+          });
+      },
+      (error) => {
+        this._getDialogSMG.getErrorSMG(error.status, error.error);
+      }
     );
   }
 }

@@ -1,7 +1,12 @@
 .example-form-field {
-    width:100%;
-  }
+  width: 100%;
+}
 
-.position-absolute{
+.position-absolute {
   position: absolute;
-  }
+}
+
+.cdk-global-overlay-wrapper,
+.cdk-overlay-container {
+  z-index: 99999 !important;
+}

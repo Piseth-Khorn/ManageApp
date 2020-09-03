@@ -14,90 +14,74 @@ import { ThrowStmt } from '@angular/compiler';
 import { NotificationsService } from 'angular2-notifications';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-user-create',
   templateUrl: './user-create.component.html',
-  styleUrls: ['./user-create.component.css']
+  styleUrls: ['./user-create.component.css'],
 })
 export class UserCreateComponent implements OnInit {
   isValidFormSubmitted = false;
   selectedFile: File = null;
   userForm: FormGroup;
-
+  user: User;
   hide1 = true;
   hide = true;
-  genders = ['Male', 'Female', 'Other']
+  genders = ['Male', 'Female', 'Other'];
   roles: Role;
-  states = ['PP', 'KK', 'Other']
+  states = ['PP', 'KK', 'Other'];
   pass = '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$';
   requiredString = 'You must enter value';
-  constructor(private fb: FormBuilder, private userService: UserService, public dialog: MatDialog,
-    private _snackBar: SnackbarComponent, private _notificationService: NotificationsService,
-    private _toastService: ToastrService, private _getDialogSMG: ToastrComponent,
-    private uploadService: UploadService, public _errorService: ErrorService, private _roleService: RoleService) { }
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    public dialog: MatDialog,
+    private _snackBar: SnackbarComponent,
+    private _notificationService: NotificationsService,
+    private _toastService: ToastrService,
+    private _getDialogSMG: ToastrComponent,
+    private uploadService: UploadService,
+    public _errorService: ErrorService,
+    private _roleService: RoleService
+  ) {}
 
   ngOnInit(): void {
     this.userForm = this.fb.group({
-      firstName: ['', [
-        Validators.required,
-        Validators.minLength(2)
-
-      ]],
-      lastName: ['', [
-        Validators.required,
-        Validators.minLength(2)
-      ]],
-      email: ['', [
-        Validators.required,
-        Validators.email
-      ]],
-      password: ['', [
-        Validators.required,
-        Validators.pattern(this.pass),
-        Validators.minLength(8)
-      ]],
-      confirmPassword: ['', [
-        Validators.required,
-        Validators.pattern(this.pass),
-        Validators.minLength(8)
-      ]],
-      role: ['', [
-        Validators.required,
-        Validators.maxLength(30)
-      ]],
-      phoneNumber: [null, [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(14),
-
-
-      ]],
-      gender: ['', [
-        Validators.required,
-      ]],
-      dateOfBirth: ['', [
-        Validators.required,
-      ]],
-      address1: ['', [
-        Validators.required,
-        Validators.maxLength(200)
-      ]],
-      address2: ['', [
-        Validators.required,
-        Validators.maxLength(200)
-      ]],
-      city: ['', [
-        Validators.required,
-        Validators.maxLength(50)
-      ]],
-      state: ['', [
-        Validators.required,
-        Validators.maxLength(50)
-      ]],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(this.pass),
+          Validators.minLength(8),
+        ],
+      ],
+      confirmPassword: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(this.pass),
+          Validators.minLength(8),
+        ],
+      ],
+      role: ['', [Validators.required]],
+      phoneNumber: [
+        null,
+        [
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(14),
+        ],
+      ],
+      gender: ['', [Validators.required]],
+      dateOfBirth: ['', [Validators.required]],
+      address1: ['', [Validators.required, Validators.maxLength(200)]],
+      address2: ['', [Validators.required, Validators.maxLength(200)]],
+      city: ['', [Validators.required, Validators.maxLength(50)]],
+      state: ['', [Validators.required, Validators.maxLength(50)]],
       zipcode: '',
-      file: ''
-
+      file: '',
     });
     this._roleService.readRole().subscribe((result) => {
       this.roles = result;
@@ -105,7 +89,6 @@ export class UserCreateComponent implements OnInit {
   }
   get firstName() {
     return this.userForm.get('firstName');
-
   }
   get lastName() {
     return this.userForm.get('lastName');
@@ -150,7 +133,7 @@ export class UserCreateComponent implements OnInit {
     return this._errorService.getErrorMessage(ms, this.userForm);
   }
   onSubmit() {
-    this.userForm.get('zipcode').setValue(1);
+    this.user = this.userForm.value;
     const fd = new FormData();
     if (this.selectedFile != null)
       fd.append('file', this.selectedFile, this.selectedFile.name);
@@ -171,24 +154,15 @@ export class UserCreateComponent implements OnInit {
     if (this.userForm.invalid) return;
     this.isValidFormSubmitted = true;
     if (this._errorService.getValidatePassword(this.userForm) == true) {
-      this._getDialogSMG.getWarningSMG('Note', 'Password and confirmPassword does not match!!');
+      this._getDialogSMG.getWarningSMG(
+        'Note',
+        'Password and confirmPassword does not match!!'
+      );
       return;
     }
-
-    this.userService.createUser(fd).subscribe((res) => {
-      // console.log('User Created', res);
-      this._getDialogSMG.getSuccessSMG(null, 'Data transaction successfully');
-      this.userForm.reset();
-    }, (err) => {
-      if (err == 'Email already exists') {
-        this._getDialogSMG.getErrorSMG(err.statusText, err.error);
-        return;
-      }
-      this._getDialogSMG.getErrorSMG(err.statusText, err.error);
-      console.log(err);
-    });
+    this.userService.createUser(fd);
+    this.userForm.reset();
   }
-
 
   onFileSelected(event) {
     //console.log(event);
@@ -197,8 +171,7 @@ export class UserCreateComponent implements OnInit {
   onUpload() {
     const fd = new FormData();
     fd.append('file', this.selectedFile, this.selectedFile.name);
-    console.log((this.selectedFile.name) ? this.selectedFile.name : '');
+    console.log(this.selectedFile.name ? this.selectedFile.name : '');
     this.uploadService.fileUpload(fd);
-
   }
 }
