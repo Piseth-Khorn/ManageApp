@@ -2,20 +2,20 @@ import { Role } from './../interface/role';
 import { Observable, empty } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, min } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoleService {
+  DD = 'http://localhost:9000/role';
   NODE_API_SERVER = 'http://localhost:9000/role';
   JAVA_SPRING_API_SERVER = 'http://localhost:8080/api/role';
   constructor(private _httpClient: HttpClient) {}
 
   readRole(id?: any): Observable<any> {
     //console.log(id)
-    if (id == null)
-      return this._httpClient.get<any>(`${this.JAVA_SPRING_API_SERVER}`);
+    if (id == null) return this._httpClient.get<any>(`${this.DD}`);
     return this._httpClient.get<any>(`${this.JAVA_SPRING_API_SERVER}/${id}`);
   }
 
@@ -36,17 +36,10 @@ export class RoleService {
     );
   }
 
-  findRole(
-    id: number,
-    filter = '',
-    sortOrder = 'asc',
-    pageNumber = 0,
-    pageSize = 3
-  ): Observable<Role[]> {
+  findRole(filter, sortOrder, pageNumber, pageSize): Observable<Role[]> {
     return this._httpClient
-      .get(`${this.JAVA_SPRING_API_SERVER}`, {
+      .get(`${this.DD}`, {
         params: new HttpParams()
-          .set('id', id.toString())
           .set('filter', filter)
           .set('sortOrder', sortOrder)
           .set('pageNumber', pageNumber.toString())
@@ -56,5 +49,8 @@ export class RoleService {
   }
   findRoleById(id: number): Observable<Role> {
     return this._httpClient.get<Role>(`${this.JAVA_SPRING_API_SERVER}/${id}`);
+  }
+  rowCount() {
+    return this._httpClient.get(`${this.DD}/count`);
   }
 }

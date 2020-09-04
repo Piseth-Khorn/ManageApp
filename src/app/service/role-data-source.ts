@@ -9,16 +9,14 @@ export class RoleDataSource implements DataSource<Role> {
   public loading$ = this.loadingSubject.asObservable();
   constructor(private roleServicec: RoleService) {}
   loadRoles(
-    Id: number,
     filter: string,
     sortDirection: string,
     pageIndex: number,
     pageSize: number
   ) {
     this.loadingSubject.next(true);
-
     this.roleServicec
-      .findRole(Id, filter, sortDirection, pageIndex, pageSize)
+      .findRole(filter, sortDirection, pageIndex, pageSize)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

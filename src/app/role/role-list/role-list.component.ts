@@ -13,13 +13,13 @@ import { Role } from './../../interface/role';
 import { MatTableDataSource } from '@angular/material/table';
 import { Component, OnInit, ViewChild, Input, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { fromEvent } from 'rxjs';
 import {
   debounce,
   debounceTime,
   distinctUntilChanged,
   tap,
 } from 'rxjs/operators';
+import { merge, fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-role-list',
@@ -27,13 +27,14 @@ import {
   styleUrls: ['./role-list.component.css'],
 })
 export class RoleListComponent implements OnInit {
+  rowCount: any;
   roleDataSource: RoleDataSource;
-  displayedColumns: string[] = ['_id', 'name', 'createDate', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'createDate', 'action'];
   dataSource: MatTableDataSource<Role>;
   role: Role;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  @ViewChild('input', { static: true }) Input: ElementRef;
+  @ViewChild('input', { static: true }) input: ElementRef;
   constructor(
     private _roleService: RoleService,
     public _dataPip: DatePipe,
@@ -44,25 +45,36 @@ export class RoleListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this._roleService.rowCount().subscribe((res) => {
+      this.rowCount = res;
+      console.log(this.rowCount.rowCount);
+    });
     this.roleDataSource = new RoleDataSource(this._roleService);
-    this.roleDataSource.loadRoles(1, '', 'asc', 0, 3);
-    this.getRole();
+    this.roleDataSource.loadRoles('', 'asc', 0, 5);
+    // this.getRole();
   }
-  ngAfterViewInit(): void {
+  ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-    fromEvent(this.Input.nativeElement, 'keyup').pipe(
-      debounceTime(150),
-      distinctUntilChanged(),
-      tap(() => {
-        this.paginator.pageIndex = 0;
-        this.loadRolePage();
-      })
-    );
+
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+
+          this.loadRolePage();
+        })
+      )
+      .subscribe();
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(tap(() => this.loadRolePage()))
+      .subscribe();
   }
   loadRolePage() {
     this.roleDataSource.loadRoles(
-      1,
-      this.Input.nativeElement.value,
+      this.input.nativeElement.value,
       this.sort.direction,
       this.paginator.pageIndex,
       this.paginator.pageSize
