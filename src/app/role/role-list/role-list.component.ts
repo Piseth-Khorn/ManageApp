@@ -54,7 +54,9 @@ export class RoleListComponent implements OnInit {
     // this.getRole();
   }
   ngAfterViewInit() {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = this.paginator.pageIndex;
+    });
 
     fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
@@ -62,7 +64,6 @@ export class RoleListComponent implements OnInit {
         distinctUntilChanged(),
         tap(() => {
           this.paginator.pageIndex = 0;
-
           this.loadRolePage();
         })
       )
@@ -79,6 +80,8 @@ export class RoleListComponent implements OnInit {
       this.paginator.pageIndex,
       this.paginator.pageSize
     );
+    console.log(this.paginator.pageIndex + ' PageIndex');
+    console.log(this.paginator.pageSize + ' pageSize');
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

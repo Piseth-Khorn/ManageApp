@@ -8,6 +8,7 @@ import { map, min } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class RoleService {
+  data = [];
   DD = 'http://localhost:9000/role';
   NODE_API_SERVER = 'http://localhost:9000/role';
   JAVA_SPRING_API_SERVER = 'http://localhost:8080/api/role';
