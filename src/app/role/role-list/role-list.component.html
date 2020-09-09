@@ -36,7 +36,7 @@
         <div class="form-group col-sm-2">
           <mat-form-field style="margin-right: 0px">
             <mat-label>Search</mat-label>
-            <input matInput placeholder="Ex. Mia" #input />
+            <input matInput placeholder="Ex. Mia" #input on-keyup="refresh()" />
           </mat-form-field>
         </div>
       </div>
@@ -65,16 +65,18 @@
               CreateDate
             </th>
             <td mat-cell *matCellDef="let row">
+              {{row.create_date}}
               {{ _dataPip.transform(row.createDate, "dd/MMM/yyyy") }}
             </td>
           </ng-container>
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let row">
-              <button title="Edit" mat-icon-button color="primary" on-click="onUpdate(row.id)" class="mat-item-update">
+              <input type="hidden" name="dd" [(ngModel)]="dd" #fondovalor value="{{row.rowcount}}">
+              <button title="Edit" mat-icon-button color="primary" on-click="onUpdate(row._id)" class="mat-item-update">
                 <mat-icon>edit</mat-icon>
               </button>
-              <button title="Delete" mat-icon-button on-click="onDelete(row.id)" class="mat-item-delete">
+              <button title="Delete" mat-icon-button on-click="onDelete(row._id)" class="mat-item-delete">
                 <mat-icon>delete</mat-icon>
               </button>
             </td>
@@ -90,7 +92,7 @@
           </tr>
         </table>
 
-        <mat-paginator style-paginator showFirstLastButtons [length]="rowCount?.rowCount" [pageSize]="5"
+        <mat-paginator style-paginator showFirstLastButtons [length]="rowCount?.count" [pageSize]="5"
           [pageSizeOptions]="[5, 10, 25, 100]">
         </mat-paginator>
       </div>

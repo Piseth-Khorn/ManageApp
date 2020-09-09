@@ -4,6 +4,7 @@ import { DataSource, CollectionViewer } from '@angular/cdk/collections';
 import { Role } from '../interface/role';
 import { catchError, finalize } from 'rxjs/operators';
 export class RoleDataSource implements DataSource<Role> {
+  public rowCount: any;
   private rolesSubject = new BehaviorSubject<Role[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
   public loading$ = this.loadingSubject.asObservable();
@@ -21,7 +22,9 @@ export class RoleDataSource implements DataSource<Role> {
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))
       )
-      .subscribe((roles) => this.rolesSubject.next(roles));
+      .subscribe((roles) => {
+        this.rolesSubject.next(roles);
+      });
   }
   connect(
     collectionViewer: CollectionViewer

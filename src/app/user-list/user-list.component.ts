@@ -1,3 +1,4 @@
+import { UserDataSource } from './../user-data-source/user-data-source';
 import { DatePipe } from '@angular/common';
 import { UserUpdateComponent } from './../user-update/user-update.component';
 import {
@@ -13,10 +14,12 @@ import {
 } from '@angular/material/dialog';
 import { UserService } from './../service/user.service';
 import { User } from './../interface/user';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { fromEvent, merge } from 'rxjs';
+import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -38,10 +41,13 @@ export class UserListComponent implements OnInit {
     'gender',
     'action',
   ];
+  rowCount: any;
   dataSource: MatTableDataSource<User>;
+  userDataSource: UserDataSource;
   users: User;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild('input', { static: true }) input: ElementRef;
 
   constructor(
     private _userService: UserService,
@@ -53,7 +59,47 @@ export class UserListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getUserData();
+    this.userDataSource = new UserDataSource(this._userService);
+    this.userDataSource.loadUser('', 'asc', 0, 5);
+    this.rowCount = { count: localStorage.getItem('userCount') };
+    //this.getUserData();
+  }
+
+  ngAfterViewInit(): void {
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = this.paginator.pageIndex;
+    });
+
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        tap(() => {
+          this.paginator.pageIndex = 0;
+          this.loadRolePage();
+        })
+      )
+      .subscribe((res) => {
+        console.log(res);
+      });
+
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        tap(() => {
+          this.loadRolePage();
+        })
+      )
+      .subscribe()
+      .add(() => console.log('hello waiting 2'));
+  }
+  loadRolePage() {
+    this.userDataSource.loadUser(
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.paginator.pageIndex,
+      this.paginator.pageSize
+    );
+    //console.log('third');
   }
   dd() {
     console.log('hi sort');

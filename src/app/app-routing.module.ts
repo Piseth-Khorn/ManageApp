@@ -22,19 +22,64 @@ const routes: Routes = [
   {
     path: '',
     component: DefaultComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: '', component: Dashboardv1Component },
-      { path: 'user-list', component: UserListComponent },
-      { path: 'user-create', component: UserCreateComponent },
-      { path: 'user-update', component: UserUpdateComponent },
-      { path: 'user-list', component: UserListComponent },
-      { path: 'company-create', component: CompanyCreateComponent },
-      { path: 'company-update', component: CompanyUpdateComponent },
-      { path: 'company-list', component: CompanyListComponent },
-      { path: 'role-list', component: RoleListComponent },
-      { path: 'role-create', component: RolecreateComponent },
-      { path: 'role-update', component: RoleUpdateComponent },
-      { path: 'test-datatable', component: TestDatatableComponent },
+      { path: '', component: Dashboardv1Component, canActivate: [AuthGuard] },
+      {
+        path: 'user-list',
+        component: UserListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'user-create',
+        component: UserCreateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'user-update',
+        component: UserUpdateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'user-list',
+        component: UserListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'company-create',
+        component: CompanyCreateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'company-update',
+        component: CompanyUpdateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'company-list',
+        component: CompanyListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'role-list',
+        component: RoleListComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'role-create',
+        component: RolecreateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'role-update',
+        component: RoleUpdateComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'test-datatable',
+        component: TestDatatableComponent,
+        canActivate: [AuthGuard],
+      },
     ],
   },
 

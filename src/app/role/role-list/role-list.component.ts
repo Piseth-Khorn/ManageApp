@@ -1,3 +1,4 @@
+import { async, inject } from '@angular/core/testing';
 import { RoleDataSource } from './../../service/role-data-source';
 
 import { RoleUpdateComponent } from './../role-update/role-update.component';
@@ -27,7 +28,8 @@ import { merge, fromEvent } from 'rxjs';
   styleUrls: ['./role-list.component.css'],
 })
 export class RoleListComponent implements OnInit {
-  rowCount: any;
+  dd;
+  rowCount: { count: null };
   roleDataSource: RoleDataSource;
   displayedColumns: string[] = ['id', 'name', 'createDate', 'action'];
   dataSource: MatTableDataSource<Role>;
@@ -35,6 +37,7 @@ export class RoleListComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('input', { static: true }) input: ElementRef;
+
   constructor(
     private _roleService: RoleService,
     public _dataPip: DatePipe,
@@ -45,20 +48,21 @@ export class RoleListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this._roleService.rowCount().subscribe((res) => {
-      this.rowCount = res;
-      console.log(this.rowCount.rowCount);
-    });
     this.roleDataSource = new RoleDataSource(this._roleService);
     this.roleDataSource.loadRoles('', 'asc', 0, 5);
-    // this.getRole();
+    //this.getRole();
+    this._roleService.rowCount().subscribe((res) => {
+      console.log(res);
+      this.rowCount = { count: res.rowCount };
+    });
   }
+
   ngAfterViewInit() {
     this.sort.sortChange.subscribe(() => {
       this.paginator.pageIndex = this.paginator.pageIndex;
     });
 
-    fromEvent(this.input.nativeElement, 'keyup')
+    this.dd = fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
         debounceTime(150),
         distinctUntilChanged(),
@@ -67,11 +71,30 @@ export class RoleListComponent implements OnInit {
           this.loadRolePage();
         })
       )
-      .subscribe();
+      .subscribe((res) => {
+        this._roleService
+          .rowCountSearch(this.input.nativeElement.value)
+          .subscribe((res) => {
+            setTimeout(() => {
+              this.rowCount.count = res.rowCount;
+            }, 200);
+          });
+      });
 
     merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.loadRolePage()))
-      .subscribe();
+      .pipe(
+        tap(() => {
+          this.loadRolePage();
+        })
+      )
+      .subscribe()
+      .add(() => console.log('hello waiting 2'));
+  }
+  refresh() {
+    setTimeout(() => {
+      console.log('hello waiting 2');
+      // this.rowCount = { count: localStorage.getItem('rowCount') };
+    }, 10000);
   }
   loadRolePage() {
     this.roleDataSource.loadRoles(
@@ -80,8 +103,7 @@ export class RoleListComponent implements OnInit {
       this.paginator.pageIndex,
       this.paginator.pageSize
     );
-    console.log(this.paginator.pageIndex + ' PageIndex');
-    console.log(this.paginator.pageSize + ' pageSize');
+    //console.log('third');
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
