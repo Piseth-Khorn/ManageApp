@@ -13,7 +13,8 @@ export class RoleService {
     localStorage.getItem('access-token')
   );
   DD = 'http://localhost:9000/role';
-  NODE_API_SERVER = 'http://localhost:9000/role';
+  NODE_API_SERVER =
+    'https://tn7rwktyjd.execute-api.ap-southeast-1.amazonaws.com/production/role';
   JAVA_SPRING_API_SERVER = 'http://localhost:8080/api/role';
   constructor(private _httpClient: HttpClient) {}
 
@@ -69,12 +70,12 @@ export class RoleService {
       headers: this.headers,
     });
   }
-  rowCountSearch(str) {
+  rowCountSearch(str): Observable<any> {
     if (!str)
-      return this._httpClient.get(`${this.NODE_API_SERVER}/rowcount`, {
+      return this._httpClient.get<any>(`${this.NODE_API_SERVER}/rowcount`, {
         headers: this.headers,
       });
-    return this._httpClient.get(
+    return this._httpClient.get<any>(
       `${this.NODE_API_SERVER}/rowCountSearch/${str}`,
       {
         headers: this.headers,

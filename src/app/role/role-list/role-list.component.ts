@@ -29,7 +29,7 @@ import { merge, fromEvent } from 'rxjs';
 })
 export class RoleListComponent implements OnInit {
   dd;
-  rowCount: { count: null };
+  rowCount: { rowCount: null };
   roleDataSource: RoleDataSource;
   displayedColumns: string[] = ['id', 'name', 'createDate', 'action'];
   dataSource: MatTableDataSource<Role>;
@@ -51,9 +51,9 @@ export class RoleListComponent implements OnInit {
     this.roleDataSource = new RoleDataSource(this._roleService);
     this.roleDataSource.loadRoles('', 'asc', 0, 5);
     //this.getRole();
-    this._roleService.rowCount().subscribe((res) => {
-      console.log(res);
-      this.rowCount = { count: res.rowCount };
+    this._roleService.rowCount().subscribe((rowCont: any) => {
+      console.log(rowCont);
+      this.rowCount = { rowCount: rowCont.rowCount };
     });
   }
 
@@ -76,7 +76,7 @@ export class RoleListComponent implements OnInit {
           .rowCountSearch(this.input.nativeElement.value)
           .subscribe((res) => {
             setTimeout(() => {
-              this.rowCount.count = res.rowCount;
+              this.rowCount.rowCount = res.rowCount;
             }, 200);
           });
       });

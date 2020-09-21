@@ -35,8 +35,8 @@ export class UserDataSource implements DataSource<User> {
       )
       .subscribe((user) => {
         this.userSubject.next(user);
-        console.log(user[0]);
-        localStorage.setItem('userCount', user[0].rowcount);
+        // console.log(user[0]);
+        // localStorage.setItem('userCount', user[0].rowcount);
       });
   }
 }

@@ -155,7 +155,7 @@ export class UserUpdateComponent implements OnInit {
         lastName: this.user.lastName,
         email: this.user.email,
         password: '',
-        role: this.user.roleID,
+        role: this.user.role,
         confirmPassword: '',
         phoneNumber: this.user.phoneNumber,
         gender: this.user.gender,
@@ -171,7 +171,7 @@ export class UserUpdateComponent implements OnInit {
         file: '',
       });
       // console.log(this.user);
-      this.selectedCity = this.user.roleID;
+      this.selectedCity = this.user.role;
     });
   }
   onFileSelected(event) {

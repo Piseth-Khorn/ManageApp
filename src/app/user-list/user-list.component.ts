@@ -41,7 +41,7 @@ export class UserListComponent implements OnInit {
     'gender',
     'action',
   ];
-  rowCount: any;
+  rowCount = { rowCount: null };
   dataSource: MatTableDataSource<User>;
   userDataSource: UserDataSource;
   users: User;
@@ -61,7 +61,9 @@ export class UserListComponent implements OnInit {
   ngOnInit() {
     this.userDataSource = new UserDataSource(this._userService);
     this.userDataSource.loadUser('', 'asc', 0, 5);
-    this.rowCount = { count: localStorage.getItem('userCount') };
+    this._userService.rowCountSearch().subscribe((res) => {
+      this.rowCount = res;
+    });
     //this.getUserData();
   }
 
@@ -80,7 +82,13 @@ export class UserListComponent implements OnInit {
         })
       )
       .subscribe((res) => {
-        console.log(res);
+        this._userService
+          .rowCountSearch(this.input.nativeElement.value)
+          .subscribe((res) => {
+            setTimeout(() => {
+              this.rowCount = res;
+            }, 100);
+          });
       });
 
     merge(this.sort.sortChange, this.paginator.page)

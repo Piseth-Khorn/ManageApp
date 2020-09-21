@@ -18,8 +18,9 @@ export class UserService {
     'access-token',
     localStorage.getItem('access-token')
   );
-  DD = 'http://localhost:9000/user';
-  NODE_API_SERVER = 'http://localhost:9000';
+
+  NODE_API_SERVER =
+    'https://tn7rwktyjd.execute-api.ap-southeast-1.amazonaws.com/production/user';
   JAVA_SPRING_API_SERVER = 'http://localhost:8080/api';
   constructor(
     private _httpClient: HttpClient,
@@ -28,10 +29,10 @@ export class UserService {
 
   readUser(id?: any): Observable<any> {
     if (id == null)
-      return this._httpClient.get<any>(`${this.NODE_API_SERVER}/user`, {
+      return this._httpClient.get<any>(`${this.NODE_API_SERVER}`, {
         headers: this.headers,
       });
-    return this._httpClient.get<any>(`${this.NODE_API_SERVER}/user/${id}`, {
+    return this._httpClient.get<any>(`${this.NODE_API_SERVER}/${id}`, {
       headers: this.headers,
     });
   }
@@ -39,7 +40,7 @@ export class UserService {
   createUser(fd) {
     // console.log(fd)
     return this._httpClient
-      .post(`${this.NODE_API_SERVER}/user`, fd, {
+      .post(`${this.NODE_API_SERVER}`, fd, {
         headers: this.headers,
         reportProgress: true,
         observe: 'events',
@@ -90,7 +91,8 @@ export class UserService {
 
   findUser(filter, sortOrder, pageNumber, pageSize): Observable<User[]> {
     return this._httpClient
-      .get(`${this.DD}/ffff`, {
+      .get(`${this.NODE_API_SERVER}/datasource`, {
+        headers: this.headers,
         params: new HttpParams()
           .set('filter', filter)
           .set('sortOrder', sortOrder)
@@ -98,5 +100,16 @@ export class UserService {
           .set('pageSize', pageSize.toString()),
       })
       .pipe(map((res) => res['payload']));
+  }
+
+  rowCountSearch(str?: any): Observable<any> {
+    if (str)
+      return this._httpClient.get<any>(
+        `${this.NODE_API_SERVER}/rowCountSearch/${str}`,
+        { headers: this.headers }
+      );
+    return this._httpClient.get<any>(`${this.NODE_API_SERVER}/rowcount`, {
+      headers: this.headers,
+    });
   }
 }

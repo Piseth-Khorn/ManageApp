@@ -119,7 +119,7 @@
                 <mat-label>Role</mat-label>
                 <mat-select name='role' formControlName="role" required>
                   <mat-option>None</mat-option>
-                  <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}}
+                  <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}
                   </mat-option>
                 </mat-select>
                 <mat-error *ngIf="role.invalid && role.touched">
