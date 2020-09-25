@@ -13,7 +13,7 @@ import {
   HttpClientModule,
   HTTP_INTERCEPTORS,
 } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -41,9 +41,10 @@ import { RoleListComponent } from './role/role-list/role-list.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoleDirective } from './service/role.directive';
+import { GloblErrorHandlerComponent } from './globl-error-handler/globl-error-handler.component';
 
 @NgModule({
-  declarations: [AppComponent, RoleDirective],
+  declarations: [AppComponent, RoleDirective, GloblErrorHandlerComponent],
   imports: [
     FormsModule,
     ReactiveFormsModule,
@@ -81,6 +82,10 @@ import { RoleDirective } from './service/role.directive';
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    {
+      provide: ErrorHandler,
+      useClass: GloblErrorHandlerComponent,
+    },
   ],
   bootstrap: [AppComponent],
 })

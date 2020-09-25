@@ -13,6 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ThrowStmt } from '@angular/compiler';
 import { NotificationsService } from 'angular2-notifications';
 import { ToastrService } from 'ngx-toastr';
+import { Select2OptionData } from 'ng-select2';
 
 @Component({
   selector: 'app-user-create',
@@ -20,17 +21,20 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./user-create.component.css'],
 })
 export class UserCreateComponent implements OnInit {
-  isValidFormSubmitted = false;
-  selectedFile: File = null;
-  userForm: FormGroup;
-  user: User;
-  hide1 = true;
-  hide = true;
-  genders = ['Male', 'Female', 'Other'];
-  roles: Role;
-  states = ['PP', 'KK', 'Other'];
-  pass = '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$';
-  requiredString = 'You must enter value';
+  public isValidFormSubmitted = false;
+  public selectedFile: File = null;
+  public userForm: FormGroup;
+  public user: User;
+  public hide1 = true;
+  public hide = true;
+  public genders = ['Male', 'Female', 'Other'];
+  public roles: Role;
+  public states = ['PP', 'KK', 'Other'];
+  public pass = '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$';
+  public requiredString = 'You must enter value';
+  public starValue: string;
+  public selected: string;
+  public exampleGender: Array<Select2OptionData>;
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -45,6 +49,9 @@ export class UserCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.exampleGender = this._roleService.getRoleList();
+    this.starValue = '1';
+    this.selected = '';
     this.userForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
@@ -160,8 +167,7 @@ export class UserCreateComponent implements OnInit {
       );
       return;
     }
-    this.userService.createUser(fd);
-    this.userForm.reset();
+    this.userService.createUser(fd).add(() => this.userForm.reset());
   }
 
   onFileSelected(event) {
@@ -173,5 +179,8 @@ export class UserCreateComponent implements OnInit {
     fd.append('file', this.selectedFile, this.selectedFile.name);
     console.log(this.selectedFile.name ? this.selectedFile.name : '');
     this.uploadService.fileUpload(fd);
+  }
+  public changed(e: any): void {
+    this.selected = e.value;
   }
 }

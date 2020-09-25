@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
+import { AuthService } from './../auth/auth.service';
 import { UserDataSource } from './../user-data-source/user-data-source';
-import { DatePipe } from '@angular/common';
+import { Location, DatePipe, DOCUMENT } from '@angular/common';
 import { UserUpdateComponent } from './../user-update/user-update.component';
 import {
   NgbModal,
@@ -20,6 +22,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { Inject } from '@angular/core';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -55,15 +58,32 @@ export class UserListComponent implements OnInit {
     private _modalService: NgbModal,
     public _activeNgbModal: NgbActiveModal,
     private _modalConfig: NgbModalConfig,
-    public _datePip: DatePipe
+    public _datePip: DatePipe,
+    private _authService: AuthService,
+    private _Router: Router,
+    @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngOnInit() {
     this.userDataSource = new UserDataSource(this._userService);
     this.userDataSource.loadUser('', 'asc', 0, 5);
-    this._userService.rowCountSearch().subscribe((res) => {
-      this.rowCount = res;
-    });
+    this._userService.rowCountSearch().subscribe(
+      (res) => {
+        this.rowCount = res;
+      },
+      (e) => {
+        // if (e.error.message == 'jwt expired') {
+        //   if (this._authService.logOut() == true) {
+        //     this._Router
+        //       .navigateByUrl('/login', { skipLocationChange: true })
+        //       .then(async () => {
+        //         await this.document.location.reload();
+        //       });
+        //   }
+        // }
+        console.log(e.error.message);
+      }
+    );
     //this.getUserData();
   }
 

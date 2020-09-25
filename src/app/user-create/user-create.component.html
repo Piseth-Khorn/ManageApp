@@ -144,7 +144,13 @@
               </mat-form-field>
             </div>
             <div class="form-group col-md-4">
-              <mat-form-field color="accent" class="example-form-field">
+              <div class="example-form-field">
+
+                <ng-select2 [data]="exampleGender" [value]="starValue" [width]="150" (valueChanged)="changed($event)">
+                </ng-select2>
+              </div>
+
+              <!-- <mat-form-field color="accent" class="example-form-field">
                 <mat-label>Gender</mat-label>
                 <mat-select name='gender' formControlName="gender">
                   <mat-option *ngFor="let gender of genders" [value]="gender">
@@ -154,7 +160,7 @@
                 <mat-error *ngIf="gender.invalid && gender.touched">
                   {{getErrorMessage('gender')}}
                 </mat-error>
-              </mat-form-field>
+              </mat-form-field> -->
             </div>
             <div class="form-group col-md-2">
               <mat-form-field color="accent" class="example-form-field">

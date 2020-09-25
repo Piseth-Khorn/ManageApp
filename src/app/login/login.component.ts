@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
       return;
     }
     this._authService.login(this.loginForm.value).subscribe(
-      async (res) => {
-        await localStorage.setItem('access-token', res);
+      (res) => {
+        localStorage.setItem('access-token', res);
         this._router
           .navigateByUrl('/', { skipLocationChange: false })
           .then(async () => {
-            await this.document.location.reload();
+            this.document.location.reload();
           });
       },
       (error) => {

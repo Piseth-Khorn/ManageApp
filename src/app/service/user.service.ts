@@ -19,8 +19,7 @@ export class UserService {
     localStorage.getItem('access-token')
   );
 
-  NODE_API_SERVER =
-    'https://tn7rwktyjd.execute-api.ap-southeast-1.amazonaws.com/production/user';
+  NODE_API_SERVER = 'http://localhost:9000/user';
   JAVA_SPRING_API_SERVER = 'http://localhost:8080/api';
   constructor(
     private _httpClient: HttpClient,

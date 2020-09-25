@@ -1,3 +1,4 @@
+import { Select2OptionData } from 'ng-select2';
 import { Role } from './../interface/role';
 import { Observable, empty } from 'rxjs';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
@@ -13,8 +14,7 @@ export class RoleService {
     localStorage.getItem('access-token')
   );
   DD = 'http://localhost:9000/role';
-  NODE_API_SERVER =
-    'https://tn7rwktyjd.execute-api.ap-southeast-1.amazonaws.com/production/role';
+  NODE_API_SERVER = 'http://localhost:9000/role';
   JAVA_SPRING_API_SERVER = 'http://localhost:8080/api/role';
   constructor(private _httpClient: HttpClient) {}
 
@@ -81,5 +81,22 @@ export class RoleService {
         headers: this.headers,
       }
     );
+  }
+
+  getRoleList(): Select2OptionData[] {
+    return [
+      {
+        id: '1',
+        text: 'Male',
+      },
+      {
+        id: '2',
+        text: 'Female',
+      },
+      {
+        id: '3',
+        text: 'Other',
+      },
+    ];
   }
 }

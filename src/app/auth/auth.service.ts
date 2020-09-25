@@ -17,8 +17,7 @@ import { optionsFactory } from 'angular2-notifications';
 })
 export class AuthService {
   _appRoot;
-  API_URL: string =
-    'https://tn7rwktyjd.execute-api.ap-southeast-1.amazonaws.com/production';
+  API_URL: string = 'http://localhost:9000';
   headers = new HttpHeaders().set(
     'access-token',
     localStorage.getItem('access-token')

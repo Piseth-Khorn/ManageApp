@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     if (this._authService.isLoggedIn() !== true) {
-      window.alert('Access Denied');
+      //window.alert('Access Denied');
       console.log(localStorage.getItem('access-token'));
       this._router.navigate(['/login']);
     }

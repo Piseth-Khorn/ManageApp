@@ -33,10 +33,15 @@ export class UserDataSource implements DataSource<User> {
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))
       )
-      .subscribe((user) => {
-        this.userSubject.next(user);
-        // console.log(user[0]);
-        // localStorage.setItem('userCount', user[0].rowcount);
-      });
+      .subscribe(
+        (user) => {
+          this.userSubject.next(user);
+          // console.log(user[0]);
+          // localStorage.setItem('userCount', user[0].rowcount);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
   }
 }
