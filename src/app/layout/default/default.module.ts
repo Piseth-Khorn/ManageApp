@@ -1,3 +1,4 @@
+import { TestDatatableComponent } from './../../test-datatable/test-datatable.component';
 import { NavbarComponent } from './../../navbar/navbar.component';
 
 import { CommonModule } from '@angular/common';
@@ -16,7 +17,10 @@ import { CompanyCreateComponent } from 'src/app/company/company-create/company-c
 import { CompanyUpdateComponent } from 'src/app/company/company-update/company-update.component';
 import { CompanyListComponent } from 'src/app/company/company-list/company-list.component';
 import { PagenotfoundComponent } from 'src/app/pagenotfound/pagenotfound.component';
-import { SnackbarComponent, testComponent } from 'src/app/snackbar/snackbar.component';
+import {
+  SnackbarComponent,
+  testComponent,
+} from 'src/app/snackbar/snackbar.component';
 import { ToastrComponent } from 'src/app/toastr/toastr.component';
 import { DeleteDialogComponent } from 'src/app/delete-dialog/delete-dialog.component';
 import { RolecreateComponent } from 'src/app/role/rolecreate/rolecreate.component';
@@ -44,60 +48,62 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgSelect2Module } from 'ng-select2';
 
 @NgModule({
-    declarations: [
-        DefaultComponent,
-        NavbarComponent,
-        Dashboardv1Component,
-        Dashboradv2Component,
-        Dashboradv3Component,
-        UserCreateComponent,
-        UserListComponent,
-        UserUpdateComponent,
-        CompanyCreateComponent,
-        CompanyUpdateComponent,
-        CompanyListComponent,
-        PagenotfoundComponent,
-        SnackbarComponent,
-        testComponent,
-        ToastrComponent,
-        DeleteDialogComponent,
-        RolecreateComponent,
-        RoleUpdateComponent,
-        RoleListComponent,
-    ],
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        RouterModule,
-        CommonModule,
-        SharedModule,
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatCardModule,
-        MatButtonModule,
-        MatInputModule,
-        MatIconModule,
-        MatSelectModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatChipsModule,
-        MatDialogModule,
-        MatSnackBarModule,
-        MatTableModule,
-        MatSortModule,
-        MatMenuModule,
-        SimpleNotificationsModule.forRoot(),
-        ToastrModule.forRoot(),
-        HttpClientModule,
-        MatPaginatorModule,
-        NgbModule,
-    ]
-
+  declarations: [
+    DefaultComponent,
+    NavbarComponent,
+    Dashboardv1Component,
+    Dashboradv2Component,
+    Dashboradv3Component,
+    UserCreateComponent,
+    UserListComponent,
+    UserUpdateComponent,
+    CompanyCreateComponent,
+    CompanyUpdateComponent,
+    CompanyListComponent,
+    PagenotfoundComponent,
+    SnackbarComponent,
+    testComponent,
+    ToastrComponent,
+    DeleteDialogComponent,
+    RolecreateComponent,
+    RoleUpdateComponent,
+    RoleListComponent,
+    TestDatatableComponent,
+  ],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    CommonModule,
+    SharedModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatButtonModule,
+    MatInputModule,
+    MatIconModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatChipsModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatSortModule,
+    MatMenuModule,
+    SimpleNotificationsModule.forRoot(),
+    ToastrModule.forRoot(),
+    HttpClientModule,
+    MatPaginatorModule,
+    NgbModule,
+    MatProgressSpinnerModule,
+    NgSelect2Module,
+  ],
+  providers: [UserListComponent],
 })
-
-export class DefaultModule { }
-
-
+export class DefaultModule {}

@@ -25,3 +25,13 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+# Dependencies need to install
+
+1 - npm i @ng-bootstrap/ng-bootstrap
+2 - npm i angular-admin-lte
+3 - npm i ng-select2
+4 - npm i angular2-notifications
+5 - npm i bootstrap
+6 - npm i ngx-toastr
+6 - npm i ngx-mat-select-search

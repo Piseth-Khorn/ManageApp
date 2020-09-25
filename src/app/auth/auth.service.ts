@@ -2,52 +2,69 @@ import { AppComponent } from './../app.component';
 import { ToastrComponent } from './../toastr/toastr.component';
 import { Observable, throwError } from 'rxjs';
 import { User } from './../interface/user';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, map } from 'rxjs/operators';
 import { optionsFactory } from 'angular2-notifications';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   _appRoot;
   API_URL: string = 'http://localhost:9000';
-  headers = new HttpHeaders().set('access-token',localStorage.getItem('access-token'));
+  headers = new HttpHeaders().set(
+    'access-token',
+    localStorage.getItem('access-token')
+  );
   currentUser = {};
   constructor(
     private _httpClient: HttpClient,
     public _router: Router,
-    private _getDialogSMG: ToastrComponent) {
+    private _getDialogSMG: ToastrComponent
+  ) {}
 
-  }
-
-  getUserId():Observable<any>{
-   return this._httpClient.get<any>(`${this.API_URL}/auth`,{headers:this.headers,responseType:'json'}).pipe(
-      map((res:Response)=>{
-        return res||{}
-      }),catchError(this.handleError)
-    );
+  getUserId(): Observable<any> {
+    return this._httpClient
+      .get<any>(`${this.API_URL}/auth`, {
+        headers: this.headers,
+        responseType: 'json',
+      })
+      .pipe(
+        map((res: Response) => {
+          return res || {};
+        }),
+        catchError(this.handleError)
+      );
   }
 
   login(user: User) {
     const requestOptions: Object = {
       /* other options here */
-      responseType: 'json'
-    }
-    return this._httpClient.post(`${this.API_URL}/auth`, user, { responseType: "text" });
+      responseType: 'json',
+    };
+    return this._httpClient.post(`${this.API_URL}/auth`, user, {
+      responseType: 'text',
+    });
   }
 
   getUserProfile(id): Observable<any> {
-    return this._httpClient.get<any>(`${this.API_URL}/user/${id}`, {
-       headers: this.headers,
-      responseType:'json'
-      }).pipe(
-      map((res: Response) => {
-        return res || {}
-      }), catchError(this.handleError));
+    return this._httpClient
+      .get<any>(`${this.API_URL}/user/${id}`, {
+        headers: this.headers,
+        responseType: 'json',
+      })
+      .pipe(
+        map((res: Response) => {
+          return res || {};
+        }),
+        catchError(this.handleError)
+      );
   }
 
   handleError(error: HttpErrorResponse) {
@@ -56,10 +73,9 @@ export class AuthService {
       // client-side error
       msg = error.error.message;
     } else {
-      msg = `Error code: ${error.status}\nMessage: ${error.message}`
+      msg = `Error code: ${error.status}\nMessage: ${error.message}`;
     }
     return throwError(msg);
-
   }
 
   logOut() {
@@ -72,7 +88,6 @@ export class AuthService {
   }
   isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access-token');
-    return (authToken !== null) ? true : false;
+    return authToken !== null ? true : false;
   }
-
 }
