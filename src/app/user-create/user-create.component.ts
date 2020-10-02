@@ -21,13 +21,65 @@ import { Select2OptionData } from 'ng-select2';
   styleUrls: ['./user-create.component.css'],
 })
 export class UserCreateComponent implements OnInit {
+  statess: string[] = [
+    'Alabama',
+    'Alaska',
+    'Arizona',
+    'Arkansas',
+    'California',
+    'Colorado',
+    'Connecticut',
+    'Delaware',
+    'Florida',
+    'Georgia',
+    'Hawaii',
+    'Idaho',
+    'Illinois',
+    'Indiana',
+    'Iowa',
+    'Kansas',
+    'Kentucky',
+    'Louisiana',
+    'Maine',
+    'Maryland',
+    'Massachusetts',
+    'Michigan',
+    'Minnesota',
+    'Mississippi',
+    'Missouri',
+    'Montana',
+    'Nebraska',
+    'Nevada',
+    'New Hampshire',
+    'New Jersey',
+    'New Mexico',
+    'New York',
+    'North Carolina',
+    'North Dakota',
+    'Ohio',
+    'Oklahoma',
+    'Oregon',
+    'Pennsylvania',
+    'Rhode Island',
+    'South Carolina',
+    'South Dakota',
+    'Tennessee',
+    'Texas',
+    'Utah',
+    'Vermont',
+    'Virginia',
+    'Washington',
+    'West Virginia',
+    'Wisconsin',
+    'Wyoming',
+  ];
   public isValidFormSubmitted = false;
   public selectedFile: File = null;
   public userForm: FormGroup;
   public user: User;
   public hide1 = true;
   public hide = true;
-  public genders = ['Male', 'Female', 'Other'];
+  public genders = [];
   public roles: Role;
   public states = ['PP', 'KK', 'Other'];
   public pass = '^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$';
@@ -49,6 +101,7 @@ export class UserCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.genders = this.statess;
     this.exampleGender = this._roleService.getRoleList();
     this.starValue = '1';
     this.selected = '';
@@ -182,5 +235,17 @@ export class UserCreateComponent implements OnInit {
   }
   public changed(e: any): void {
     this.selected = e.value;
+  }
+  onKey(event: any, type?: string) {
+    const value: string = event.target.value;
+    console.log(value);
+    if (type == 'role' && value != '') this.search(value);
+    else this._roleService.readRole().subscribe((res) => (this.roles = res));
+  }
+  search(value: string): void {
+    this._roleService.rowCountSearch(value).subscribe((res) => {
+      // console.log(res.datas);
+      this.roles = res.datas;
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { ChatComponent } from './chat/chat.component';
 import { TestDatatableComponent } from './test-datatable/test-datatable.component';
 import { BlankComponent } from './layout/blank/blank.component';
 import { DefaultComponent } from './layout/default/default.component';
@@ -80,9 +81,13 @@ const routes: Routes = [
         component: TestDatatableComponent,
         canActivate: [AuthGuard],
       },
+      {
+        path: 'chat',
+        component: ChatComponent,
+        canActivate: [AuthGuard],
+      },
     ],
   },
-
   {
     path: '',
     component: BlankComponent,

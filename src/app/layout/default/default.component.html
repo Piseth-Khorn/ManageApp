@@ -1,12 +1,14 @@
-
 <div class="wrapper">
-<app-header></app-header>
-<app-sidebar></app-sidebar>
-<router-outlet></router-outlet>
-<app-footer></app-footer>
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
-  </div>
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+  <router-outlet></router-outlet>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- <app-chat></app-chat> -->
+  <aside style="width: {{ width ? width : 0 }}" class="chatPopup"></aside>
+  <!-- /.control-sidebar -->
+  <app-footer></app-footer>
+</div>

@@ -42,6 +42,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RoleDirective } from './service/role.directive';
 import { GloblErrorHandlerComponent } from './globl-error-handler/globl-error-handler.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [AppComponent, RoleDirective, GloblErrorHandlerComponent],
@@ -55,6 +56,7 @@ import { GloblErrorHandlerComponent } from './globl-error-handler/globl-error-ha
     BrowserAnimationsModule,
   ],
   providers: [
+    ChatComponent,
     DefaultComponent,
     LoginComponent,
     Dashboardv1Component,

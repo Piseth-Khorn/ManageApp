@@ -35,20 +35,20 @@ export class GloblErrorHandlerComponent implements ErrorHandler {
       message = errorService.getServerMessage(error);
     // Client Error
     else message = errorService.getClientMessage(error);
-
+    console.log(message);
     this.snackBar.open(message, 'X', { panelClass: ['error'] });
     const rev = message.split('').reverse().join('');
     const res = rev.split(' ', 1);
     console.log(res);
-    if (res[0] == 'dezirohtuanU' || res[0] == 'detrats') {
-      if (_authService.logOut() == true) {
-        this._Router
-          .navigateByUrl('/login', { skipLocationChange: true })
-          .then(async () => {
-            await this.document.location.reload();
-          });
-      }
-    }
+    // if (res[0] == 'dezirohtuanU' || res[0] == 'detrats') {
+    //   if (_authService.logOut() == true) {
+    //     this._Router
+    //       .navigateByUrl('/login', { skipLocationChange: true })
+    //       .then(async () => {
+    //         await this.document.location.reload();
+    //       });
+    //   }
+    // }
     this.snackBar.open(noConnection, 'X', { panelClass: ['error'] });
   }
 

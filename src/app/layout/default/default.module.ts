@@ -1,3 +1,4 @@
+import { ChatComponent } from './../../chat/chat.component';
 import { TestDatatableComponent } from './../../test-datatable/test-datatable.component';
 import { NavbarComponent } from './../../navbar/navbar.component';
 
@@ -73,6 +74,7 @@ import { NgSelect2Module } from 'ng-select2';
     RoleUpdateComponent,
     RoleListComponent,
     TestDatatableComponent,
+    ChatComponent,
   ],
   imports: [
     FormsModule,
