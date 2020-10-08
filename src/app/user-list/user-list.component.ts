@@ -179,6 +179,7 @@ export class UserListComponent implements OnInit {
       this.id = null;
       this.content = null;
       this.getUserData();
+      // this.ngOnInit();
     });
   }
 }

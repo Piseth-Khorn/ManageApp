@@ -118,6 +118,7 @@
               <mat-form-field class="example-form-field">
                 <mat-label>Role</mat-label>
                 <mat-select name='role' formControlName="role" required>
+                  <input type="text" placeholder="Search..." (keyup)="onKey($event,'role')">
                   <mat-option>None</mat-option>
                   <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}
                   </mat-option>
@@ -144,15 +145,11 @@
               </mat-form-field>
             </div>
             <div class="form-group col-md-4">
-              <div class="example-form-field">
-
-                <ng-select2 [data]="exampleGender" [value]="starValue" [width]="150" (valueChanged)="changed($event)">
-                </ng-select2>
-              </div>
-
-              <!-- <mat-form-field color="accent" class="example-form-field">
+              <mat-form-field color="accent" class="example-form-field">
                 <mat-label>Gender</mat-label>
                 <mat-select name='gender' formControlName="gender">
+                  <!-- **Send user input to TS** -->
+                  <input type="text" style="width: 50%;" placeholder="Search...." (keyup)="onKey($event,'gender')">
                   <mat-option *ngFor="let gender of genders" [value]="gender">
                     {{gender}}
                   </mat-option>
@@ -160,7 +157,7 @@
                 <mat-error *ngIf="gender.invalid && gender.touched">
                   {{getErrorMessage('gender')}}
                 </mat-error>
-              </mat-form-field> -->
+              </mat-form-field>
             </div>
             <div class="form-group col-md-2">
               <mat-form-field color="accent" class="example-form-field">

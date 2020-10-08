@@ -1,3 +1,4 @@
+import { RoleJaveService } from './../../service/role-jave.service';
 import { async, inject } from '@angular/core/testing';
 import { RoleDataSource } from './../../service/role-data-source';
 
@@ -44,17 +45,19 @@ export class RoleListComponent implements OnInit {
     private _MatDialog: MatDialog,
     private _ngbModal: NgbModal,
     private _ModalConfig: NgbModalConfig,
-    private _route: ActivatedRoute
+    private _route: ActivatedRoute,
+    private $roleService: RoleJaveService
   ) {}
 
   ngOnInit(): void {
-    this.roleDataSource = new RoleDataSource(this._roleService);
-    this.roleDataSource.loadRoles('', 'asc', 0, 5);
-    //this.getRole();
-    this._roleService.rowCount().subscribe((rowCont: any) => {
-      console.log(rowCont);
-      this.rowCount = { rowCount: rowCont.rowCount };
-    });
+    this.roleDataSource = new RoleDataSource(this.$roleService);
+    this.roleDataSource.loadRoles('', 'asc', 5, 0);
+    this.getRole();
+    // this.$roleService.roleCount().subscribe((rowCont: any) => {
+    //   console.log(rowCont);
+    //   this.rowCount = { rowCount: rowCont.rowCount };
+    // });
+    // console.log(this.roleDataSource);
   }
 
   ngAfterViewInit() {
@@ -84,7 +87,7 @@ export class RoleListComponent implements OnInit {
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
         tap(() => {
-          this.loadRolePage();
+          this.loadRolePage1();
         })
       )
       .subscribe()
@@ -100,8 +103,18 @@ export class RoleListComponent implements OnInit {
     this.roleDataSource.loadRoles(
       this.input.nativeElement.value,
       this.sort.direction,
+      this.paginator.pageSize,
+      this.paginator.pageIndex
+    );
+    //console.log('third');
+  }
+  loadRolePage1() {
+    this.roleDataSource.loadRoles(
+      this.input.nativeElement.value,
+      this.sort.direction,
+      this.paginator.pageSize,
       this.paginator.pageIndex,
-      this.paginator.pageSize
+      localStorage.getItem('tokenIdNext')
     );
     //console.log('third');
   }
