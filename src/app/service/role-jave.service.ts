@@ -12,18 +12,23 @@ export class RoleJaveService {
   private JAVA_SPRING_API_SERVER = 'http://localhost:8080/api/role';
   constructor(private _httpClient: HttpClient) {}
   findRole(
-    filter,
-    sortOrder,
-    pageNumber?: any,
-    pageSize?: any
+    filter?: any,
+    sortOrder?: any,
+    pageSize?: number,
+    condi?: any,
+    tokenId?: any
   ): Observable<Role[]> {
+    // console.log(
+    //   filter + '  ' + sortOrder + '  ' + pageSize + ' ' + condi + '  ' + tokenId
+    // );
     return this._httpClient
       .get(`${this.JAVA_SPRING_API_SERVER}/page`, {
         params: new HttpParams()
           .set('filter', filter)
           .set('sortOrder', sortOrder)
-          .set('pageNumber', pageNumber ? pageNumber.toString() : '')
-          .set('pageSize', pageSize.toString()),
+          .set('pageSize', pageSize.toString())
+          .set('condition', condi)
+          .set('tokenId', tokenId),
       })
       .pipe(map((res) => res['payload']));
   }

@@ -51,12 +51,13 @@ export class RoleListComponent implements OnInit {
 
   ngOnInit(): void {
     this.roleDataSource = new RoleDataSource(this.$roleService);
-    this.roleDataSource.loadRoles('', 0, 5);
-    //this.getRole();
-    this._roleService.rowCount().subscribe((rowCont: any) => {
-      console.log(rowCont);
-      this.rowCount = { rowCount: rowCont.rowCount };
-    });
+    this.roleDataSource.loadRoles('', 'asc', 5, 0);
+    this.getRole();
+    // this.$roleService.roleCount().subscribe((rowCont: any) => {
+    //   console.log(rowCont);
+    //   this.rowCount = { rowCount: rowCont.rowCount };
+    // });
+    // console.log(this.roleDataSource);
   }
 
   ngAfterViewInit() {
@@ -110,9 +111,10 @@ export class RoleListComponent implements OnInit {
   loadRolePage1() {
     this.roleDataSource.loadRoles(
       this.input.nativeElement.value,
-      this.paginator.pageIndex,
+      this.sort.direction,
       this.paginator.pageSize,
-      localStorage.getItem('tokenId')
+      this.paginator.pageIndex,
+      localStorage.getItem('tokenIdNext')
     );
     //console.log('third');
   }
