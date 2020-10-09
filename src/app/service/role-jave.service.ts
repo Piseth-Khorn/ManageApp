@@ -16,7 +16,8 @@ export class RoleJaveService {
     sortOrder?: any,
     pageSize?: number,
     condi?: any,
-    tokenId?: any
+    tokenId?: any,
+    pageIndex?: any
   ): Observable<Role[]> {
     // console.log(
     //   filter + '  ' + sortOrder + '  ' + pageSize + ' ' + condi + '  ' + tokenId
@@ -28,7 +29,8 @@ export class RoleJaveService {
           .set('sortOrder', sortOrder)
           .set('pageSize', pageSize.toString())
           .set('condition', condi)
-          .set('tokenId', tokenId),
+          .set('tokenId', tokenId)
+          .set('pageIndex', pageIndex),
       })
       .pipe(map((res) => res['payload']));
   }

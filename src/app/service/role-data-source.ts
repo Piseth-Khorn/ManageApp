@@ -24,7 +24,16 @@ export class RoleDataSource implements DataSource<Role> {
     pageIndex?: any,
     _tokenId?: any
   ) {
-    console.log('index  ' + pageIndex);
+    // console.log('index  ' + pageIndex);
+    // console.log(this.currentIndex);
+    console.log(
+      sortDirection +
+        '  ' +
+        pageSize +
+        '  ' +
+        pageIndex 
+      
+    );
 
     // if (pageIndex > 0 && this.currentIndex == pageIndex) {
     //   this.condi = '-1';
@@ -39,7 +48,7 @@ export class RoleDataSource implements DataSource<Role> {
     if (this.currentIndex > pageIndex) {
       this.condi = '0';
       this.currentIndex = pageIndex;
-      this.tokenId = localStorage.getItem('tokenIdPrevious');
+      this.tokenId = localStorage.getItem('tokenIdNext');
       console.log('condi3');
     }
     if (pageIndex == 0) {
@@ -48,24 +57,24 @@ export class RoleDataSource implements DataSource<Role> {
       console.log('condi1');
     }
 
-    console.log(pageIndex);
-    console.log(
-      sortDirection +
-        '  ' +
-        pageSize +
-        '  ' +
-        this.currentIndex +
-        ' ' +
-        this.tokenId +
-        '  ' +
-        this.condi
-    );
+    //console.log(pageIndex);
+    // console.log(
+    //   sortDirection +
+    //     '  ' +
+    //     pageSize +
+    //     '  ' +
+    //     this.currentIndex +
+    //     ' ' +
+    //     this.tokenId +
+    //     '  ' +
+    //     this.condi
+    // );
 
     // console.log(this.currentIndex);
     // console.log(this.condi);
     this.loadingSubject.next(true);
     this._roleService
-      .findRole(filter, sortDirection, pageSize, this.condi, this.tokenId)
+      .findRole(filter, sortDirection, pageSize, this.condi, this.tokenId,pageIndex)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))

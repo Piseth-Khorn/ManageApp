@@ -52,11 +52,11 @@ export class RoleListComponent implements OnInit {
   ngOnInit(): void {
     this.roleDataSource = new RoleDataSource(this.$roleService);
     this.roleDataSource.loadRoles('', 'asc', 5, 0);
-    this.getRole();
-    // this.$roleService.roleCount().subscribe((rowCont: any) => {
-    //   console.log(rowCont);
-    //   this.rowCount = { rowCount: rowCont.rowCount };
-    // });
+    //this.getRole();
+    this.$roleService.roleCount().subscribe((rowCont: any) => {
+      console.log(rowCont);
+      this.rowCount = { rowCount: rowCont.rowCount };
+    });
     // console.log(this.roleDataSource);
   }
 
