@@ -47,7 +47,7 @@ export class RoleListComponent implements OnInit {
     private _ModalConfig: NgbModalConfig,
     private _route: ActivatedRoute,
     private $roleService: RoleJaveService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.roleDataSource = new RoleDataSource(this.$roleService);
@@ -121,7 +121,6 @@ export class RoleListComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

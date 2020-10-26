@@ -7,8 +7,8 @@ export class UserDataSource implements DataSource<User> {
   public rowCount: any;
   private userSubject = new BehaviorSubject<User[]>([]);
   private loadingSubject = new BehaviorSubject<boolean>(false);
-  public loading$ = this.userSubject.asObservable();
-  constructor(private userService: UserService) {}
+  public loading$ = this.loadingSubject.asObservable();
+  constructor(private userService: UserService) { }
   connect(
     collectionViewer: CollectionViewer
   ): Observable<User[] | readonly User[]> {
@@ -24,20 +24,22 @@ export class UserDataSource implements DataSource<User> {
     filter: string,
     sortDirection: string,
     pageIndex: number,
-    pageSize: number
+    pageSize: number,
+    sortbyField?: string
   ) {
+    console.log(pageIndex + "   " + pageSize)
     this.loadingSubject.next(true);
     this.userService
-      .findUser(filter, sortDirection, pageIndex, pageSize)
+      .getUserFromJavaApplication(filter, sortDirection, pageIndex, pageSize, sortbyField)
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject.next(false))
       )
       .subscribe(
         (user) => {
-          this.userSubject.next(user);
-          // console.log(user[0]);
-          // localStorage.setItem('userCount', user[0].rowcount);
+          this.userSubject.next(user.Content);
+          console.log(user.RowCount)
+          localStorage.setItem('userCount', user.RowCount);
         },
         (error) => {
           console.log(error);

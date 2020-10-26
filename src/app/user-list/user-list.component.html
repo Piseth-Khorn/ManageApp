@@ -1,4 +1,4 @@
-<!-- Content Wrapper. Contains page content -->
+Content Wrapper. Contains page content
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <div class="content-header">
@@ -36,11 +36,12 @@
           </mat-form-field>
         </div>
       </div>
-      <!-- <div class="spinner-container" *ngIf="userDataSource.loading$ | async">
-        <mat-spinner></mat-spinner>
-      </div> -->
+      
       <div class="mat-elevation-z8">
-        <table mat-table [dataSource]="userDataSource" matSort>
+         <div class="pupupspinner" *ngIf="userDataSource.loading$ | async">
+        <mat-spinner></mat-spinner>
+      </div>
+        <table mat-table [dataSource]="userDataSource" matSort (matSortChange) = "getSortDirection($event)">
 
           <!-- ID Column -->
           <ng-container matColumnDef="id">
@@ -50,7 +51,7 @@
 
           <!-- Progress Column -->
           <ng-container matColumnDef="firstName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> FirsName </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header > FirsName </th>
             <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
           </ng-container>
 
@@ -100,7 +101,7 @@
 
         </table>
 
-        <mat-paginator style-paginator showFirstLastButtons [length]="rowCount?.rowCount" [pageSize]="5"
+        <mat-paginator style-paginator showFirstLastButtons [length]="rowCount" [pageSize]="5"
           [pageSizeOptions]="[5, 10, 25, 100]">
         </mat-paginator>
       </div>

@@ -23,6 +23,7 @@ import { MatSort } from '@angular/material/sort';
 import { fromEvent, merge } from 'rxjs';
 import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { Inject } from '@angular/core';
+import { _countGroupLabelsBeforeOption } from '@angular/material/core';
 
 /**
  * @title Data table with sorting, pagination, and filtering.
@@ -34,6 +35,7 @@ import { Inject } from '@angular/core';
 })
 export class UserListComponent implements OnInit {
   id: string;
+  sortbyField;
   content: string;
   displayedColumns: string[] = [
     'id',
@@ -45,6 +47,7 @@ export class UserListComponent implements OnInit {
     'action',
   ];
   rowCount = { rowCount: null };
+  getCount;
   dataSource: MatTableDataSource<User>;
   userDataSource: UserDataSource;
   users: User;
@@ -62,14 +65,15 @@ export class UserListComponent implements OnInit {
     private _authService: AuthService,
     private _Router: Router,
     @Inject(DOCUMENT) private document: Document
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.userDataSource = new UserDataSource(this._userService);
     this.userDataSource.loadUser('', 'asc', 0, 5);
-    this._userService.rowCountSearch().subscribe(
+    this._userService.rowCountJavaApplication().subscribe(
       (res) => {
         this.rowCount = res;
+        //console.log(this.rowCount);
       },
       (e) => {
         // if (e.error.message == 'jwt expired') {
@@ -125,9 +129,32 @@ export class UserListComponent implements OnInit {
       this.input.nativeElement.value,
       this.sort.direction,
       this.paginator.pageIndex,
-      this.paginator.pageSize
+      this.paginator.pageSize,
+      this.sortbyField
     );
-    //console.log('third');
+    if (this.input.nativeElement.value) {
+      this.getCount = localStorage.getItem("userCount");
+      this.rowCount = this.getCount;
+    } else {
+      this._userService.rowCountJavaApplication().subscribe(
+        (res) => {
+          this.rowCount = res;
+          //console.log(this.rowCount);
+        },
+        (e) => {
+          // if (e.error.message == 'jwt expired') {
+          //   if (this._authService.logOut() == true) {
+          //     this._Router
+          //       .navigateByUrl('/login', { skipLocationChange: true })
+          //       .then(async () => {
+          //         await this.document.location.reload();
+          //       });
+          //   }
+          // }
+          console.log(e.error.message);
+        }
+      );
+    }
   }
   dd() {
     console.log('hi sort');
@@ -181,5 +208,10 @@ export class UserListComponent implements OnInit {
       this.getUserData();
       // this.ngOnInit();
     });
+  }
+  getSortDirection(event) {
+    this.sortbyField = event.active;
+    console.log(this.sortbyField)
+    console.log(event);
   }
 }

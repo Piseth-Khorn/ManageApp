@@ -24,7 +24,7 @@ export class UserService {
   constructor(
     private _httpClient: HttpClient,
     private _getDialogSMG: ToastrComponent
-  ) {}
+  ) { }
 
   readUser(id?: any): Observable<any> {
     if (id == null)
@@ -49,8 +49,8 @@ export class UserService {
           if (event.type === HttpEventType.UploadProgress) {
             console.log(
               'Upload Progress: ' +
-                Math.round((event.loaded / event.total) * 100) +
-                '%'
+              Math.round((event.loaded / event.total) * 100) +
+              '%'
             );
           } else if (event.type === HttpEventType.Response) {
             console.log(event);
@@ -111,4 +111,26 @@ export class UserService {
       headers: this.headers,
     });
   }
+
+  getUserFromJavaApplication(filter, sortOrder, pageNumber, pageSize, sortbyField): Observable<any> {
+    //console.log(sortbyField);
+    return this._httpClient.get(`${this.JAVA_SPRING_API_SERVER}/user/userPage`, {
+      params: new HttpParams()
+        .set("filter", filter)
+        .set("sort", sortOrder)
+        .set("pageNumber", pageNumber.toString())
+        .set("pageSize", pageSize.toString())
+        .set("sortbyField", sortbyField)
+    });
+  }
+  rowCountJavaApplication(filter?: string): Observable<any> {
+    if (filter) {
+      return this._httpClient.get(`${this.JAVA_SPRING_API_SERVER}/user/getUserCountSearchw`, {
+        params: new HttpParams()
+          .set("filter", filter)
+      });
+    }
+    return this._httpClient.get(`${this.JAVA_SPRING_API_SERVER}/user/count`);
+  }
+
 }
