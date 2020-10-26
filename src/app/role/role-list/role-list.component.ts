@@ -47,16 +47,16 @@ export class RoleListComponent implements OnInit {
     private _ModalConfig: NgbModalConfig,
     private _route: ActivatedRoute,
     private $roleService: RoleJaveService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.roleDataSource = new RoleDataSource(this.$roleService);
     this.roleDataSource.loadRoles('', 'asc', 5, 0);
-    this.getRole();
-    // this.$roleService.roleCount().subscribe((rowCont: any) => {
-    //   console.log(rowCont);
-    //   this.rowCount = { rowCount: rowCont.rowCount };
-    // });
+    //this.getRole();
+    this.$roleService.roleCount().subscribe((rowCont: any) => {
+      console.log(rowCont);
+      this.rowCount = { rowCount: rowCont.rowCount };
+    });
     // console.log(this.roleDataSource);
   }
 
@@ -121,7 +121,6 @@ export class RoleListComponent implements OnInit {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
